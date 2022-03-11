@@ -1,0 +1,152 @@
+version: 1
+kind: stack
+meta:
+  name: GKE Sandbox Stack
+  brief: GKE Sandbox Stack
+
+components:
+- name: gke-gcloud
+  source:
+    dir: components/gke-gcloud
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: gke-gcloud
+      ref: main    
+- name: gke-gcloud-node-pool
+  source:
+    dir: components/gke-gcloud-node-pool
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: gke-gcloud-node-pool
+      ref: main    
+- name: anthos-service-mesh
+  source:
+    dir: components/anthos-service-mesh
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: anthos-service-mesh
+      ref: main      
+- name: anthos-ingress-gateway
+  source:
+    dir: components/anthos-ingress-gateway
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: anthos-ingress-gateway
+      ref: main      
+- name: online-boutique-app
+  source:
+    dir: components/online-boutique-app
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: online-boutique-app
+      ref: main      
+- name: dns-zone-record-set
+  source:
+    dir: components/dns-zone-record-set
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: dns-zone-record-set
+      ref: main      
+
+extensions:
+  configure:
+    - gcp
+    - env
+
+requires:
+- gcp
+
+lifecycle:
+  verbs:
+  - deploy
+  - undeploy
+  order:
+  - gke-gcloud
+  - gke-gcloud-node-pool
+  - anthos-service-mesh
+  - anthos-ingress-gateway
+  - dns-zone-record-set
+  - online-boutique-app
+
+parameters:
+  - name: projectId
+    brief: |
+      ID of your GCP project
+    default: supergke
+    fromEnv: GCP_PROJECT_ID
+  - name: dns.domain
+    brief: |
+      Well known parameter. Used as a stack identifier
+      Also used by components that creates DNS records
+    default: c1.stacks.oginskis.lv
+    fromEnv: HUB_DOMAIN_NAME
+  - name: stateBucketName
+    brief: |
+      Name of GCS bucket where state enabled components will upload their state files. 
+      If bucket does not exist, it will be created
+    default: superhub_state
+    fromEnv: STATE_BUCKET
+
+  - name: component.gke
+    parameters:
+    - name: name
+      value: mygke
+    - name: zone
+      value: us-central1-a
+    - name: machineType
+      value: e2-standard-4
+    - name: nodeCount
+      value: 1
+    - name: version
+      value: 1.21
+
+  - name: component.gkeNodePool
+    parameters:
+    - name: name
+      value: vo-pool-1
+    - name: clusterName
+      value: ${component.gke.name}
+    - name: zone
+      value: ${component.gke.zone}
+    - name: machineType
+      value: e2-standard-4
+    - name: nodeCount
+      value: 3
+
+  - name: component.anthosServiceMesh
+    parameters:
+    - name: clusterName
+      value: ${component.gke.name}
+    - name: zone
+      value: ${component.gke.zone}
+
+  - name: component.anthosIngressGateway
+    parameters:
+    - name: name
+      value: default-gateway
+
+  - name: component.dnsZoneRecordSet
+    parameters:
+    - name: name
+      value: "*.${component.anthosIngressGateway.name}"
+    - name: type
+      value: "A"
+    - name: value
+      value: ${component.anthosIngressGateway.ip}
+      kind: link
+
+  - name: component.onlineBoutiqueApp
+    parameters:
+    - name: istioRevision
+      value: ${component.anthosServiceMesh.revision}
+      kind: link
+    - name: host
+      value: boutique.${component.anthosIngressGateway.name}.${dns.domain}
+    - name: ingressGateway
+      value: ${component.anthosIngressGateway.name}
+
+outputs:
+- name: component.anthosIngressGateway.ip
+- name: component.onlineBoutiqueApp.host
+- name: component.gke.url
+- name: component.anthosServiceMesh.url

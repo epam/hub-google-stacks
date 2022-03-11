@@ -1,0 +1,54 @@
+version: 1
+kind: stack
+meta:
+  name: GKE Sandbox Stack
+  brief: GKE Sandbox Stack
+components:
+- name: gke-gcloud 
+  source:
+    dir: components/gke-gcloud
+    git:
+      repo: https://github.com/agilestacks/google-components.git
+      subDir: gke-gcloud
+      ref: main
+extensions:
+  configure:
+    - gcp
+    - env
+requires:
+- gcp
+lifecycle:
+  verbs:
+  - deploy
+  - undeploy
+  order:
+  - gke-gcloud
+
+
+parameters:
+  - name: projectId
+    default: superhub
+    fromEnv: GCP_PROJECT_ID
+  - name: dns.domain
+    default: c1.stacks.oginskis.lv
+    fromEnv: HUB_DOMAIN_NAME
+  - name: stateBucketName
+    default: superhub_state
+    fromEnv: STATE_BUCKET
+
+  - name: component.gke
+    parameters:
+    - name: name
+      value: superhub-b
+    - name: zone
+      value: us-central1-a
+    - name: machineType
+      value: e2-standard-4
+    - name: nodeCount
+      value: 1
+    - name: version
+      value: 1.21
+
+
+outputs:
+- name: component.gke.url
