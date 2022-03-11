@@ -11,7 +11,7 @@ Click `Start` to go through the installation instructions.
 * You must be logged into your GCP account.
 
 * Open the Google `cloudshell` using the following link:
-https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://source.developers.google.com/p/superhub/r/stacks&cloudshell_image=gcr.io/superhub/cloud-shell&cloudshell_tutorial=hub-anthos-with-demo-app-cs.md
+https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/agilestacks/google-stacks&cloudshell_image=gcr.io/superhub/cloud-shell&cloudshell_tutorial=hub-anthos-with-demo-app.md
 
 *NOTE: The next steps must be executed from within the `cloudshell`*
 
