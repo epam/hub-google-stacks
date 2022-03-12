@@ -21,7 +21,7 @@ Before you can deploy the stack we need to ask you for some information.
 
 Please run the stack initialization command pointing to the `hub` manifest file:
 ```shell
-hub stack init -f hub-anthos-with-demo-app-cs.yaml
+hub stack init -f hub-anthos-with-demo-app.yaml
 ```
 The command will ask you to enter the ID of your GCP project.
 
@@ -34,7 +34,7 @@ hub stack configure
 ```
 
 Every `component` has a set of parameters (key-value pairs) such as GKE cluster name or number of nodes in a node pool. 
-Please explore `parameters` section of the [`hub-anthos-with-demo-app-cs.yaml`](https://source.cloud.google.com/superhub/stacks/+/master:hub-anthos-with-demo-app-cs.yaml) to see what parameters are available.
+Please explore `parameters` section of the [`hub-anthos-with-demo-app.yaml`](https://source.cloud.google.com/superhub/stacks/+/master:hub-anthos-with-demo-app-cs.yaml) to see what parameters are available.
 Any default value can be overridden.
 To get more information on how the components are implemented refer to their README files.
 

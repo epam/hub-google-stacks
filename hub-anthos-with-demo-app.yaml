@@ -9,42 +9,42 @@ components:
   source:
     dir: components/gke-gcloud
     git:
-      repo: https://github.com/agilestacks/google-components.git
+      remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
       ref: main    
 - name: gke-gcloud-node-pool
   source:
     dir: components/gke-gcloud-node-pool
     git:
-      repo: https://github.com/agilestacks/google-components.git
-      subDir: gke-gcloud-node-pool
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: gke-gcloud-node-pool 
       ref: main    
 - name: anthos-service-mesh
   source:
     dir: components/anthos-service-mesh
     git:
-      repo: https://github.com/agilestacks/google-components.git
+      remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-service-mesh
       ref: main      
 - name: anthos-ingress-gateway
   source:
     dir: components/anthos-ingress-gateway
     git:
-      repo: https://github.com/agilestacks/google-components.git
+      remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-ingress-gateway
       ref: main      
 - name: online-boutique-app
   source:
     dir: components/online-boutique-app
     git:
-      repo: https://github.com/agilestacks/google-components.git
+      remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
       ref: main      
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
     git:
-      repo: https://github.com/agilestacks/google-components.git
+      remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
       ref: main      
 

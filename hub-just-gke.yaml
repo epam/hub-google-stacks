@@ -8,7 +8,7 @@ components:
   source:
     dir: components/gke-gcloud
     git:
-      repo: https://github.com/agilestacks/google-components.git
+      remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
       ref: main
 extensions:
