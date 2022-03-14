@@ -84,7 +84,7 @@ parameters:
   - name: component.gke
     parameters:
     - name: name
-      value: mygke
+      value: ${hubStackName}
     - name: zone
       value: us-central1-a
     - name: machineType
