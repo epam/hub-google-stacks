@@ -70,22 +70,16 @@ lifecycle:
 
 parameters:
   - name: projectId
-    brief: |
-      ID of your GCP project
     default: supergke
     fromEnv: GCP_PROJECT_ID
   - name: dns.domain
-    brief: |
-      Well known parameter. Used as a stack identifier
-      Also used by components that creates DNS records
     default: c1.stacks.oginskis.lv
     fromEnv: HUB_DOMAIN_NAME
   - name: stateBucketName
-    brief: |
-      Name of GCS bucket where state enabled components will upload their state files. 
-      If bucket does not exist, it will be created
     default: superhub_state
     fromEnv: STATE_BUCKET
+  - name: hubStackName
+    fromEnv: HUB_STACK_NAME    
 
   - name: component.gke
     parameters:
