@@ -199,7 +199,6 @@ parameters:
   - name: dbPassword
     brief: User's password which will be created during deployment of Cloud SQL component
     fromEnv: DB_PASSWORD
-    empty: allow
 
 outputs:
 - name: dns.domain
