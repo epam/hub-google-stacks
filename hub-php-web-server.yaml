@@ -191,9 +191,11 @@ parameters:
   - name: dbName
     brief: Name of database which will be created during deployment of Cloud SQL component
     fromEnv: DB_NAME
+    default: sandbox
   - name: dbUser
     brief: Name of user which will be created during deployment of Cloud SQL component
     fromEnv: DB_USER
+    default: dbuser
   - name: dbPassword
     brief: User's password which will be created during deployment of Cloud SQL component
     fromEnv: DB_PASSWORD
