@@ -151,6 +151,18 @@ parameters:
     kind: link
   - name: webServer
     value: nginx
+  - name: dbName
+    value: ${component.cloudSql.dbName}
+    kind: link
+  - name: dbUser
+    value: ${component.cloudSql.dbUser}
+    kind: link
+  - name: dbPassword
+    value: ${component.cloudSql.dbPassword}
+    kind: link
+  - name: dbHost
+    value: ${component.cloudSql.privateIp}
+    kind: link
 
 - name: component.loadBalancer
   parameters:
@@ -163,18 +175,6 @@ parameters:
     kind: link
   - name: instanceGroup
     value: ${component.managedInstanceGroup.instanceGroup}
-    kind: link
-  - name: dbName
-    value: ${component.cloudSql.dbName}
-    kind: link
-  - name: dbUser
-    value: ${component.cloudSql.dbUser}
-    kind: link
-  - name: dbPassword
-    value: ${component.cloudSql.dbPassword}
-    kind: link
-  - name: dbHost
-    value: ${component.cloudSql.privateIp}
     kind: link
 
 - name: component.dnsZoneRecordSet
