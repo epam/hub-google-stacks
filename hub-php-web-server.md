@@ -10,7 +10,7 @@ Click `Start` to go through the installation instructions.
 
 * You must be logged into your GCP account.
 
-* Open the Google `cloudshell` using the following [`link`](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://source.developers.google.com/p/superhub/r/stacks&cloudshell_image=gcr.io/superhub/cloud-shell&cloudshell_tutorial=hub-vm-app.md)
+* Open the Google `cloudshell` using the following [`link`](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://source.developers.google.com/p/superhub/r/stacks&cloudshell_image=gcr.io/superhub/cloud-shell&cloudshell_tutorial=hub-php-web-server.md)
 
 *NOTE: The next steps must be executed from within the `cloudshell`*
 
@@ -21,7 +21,7 @@ Before you can deploy the stack we need to ask you for some information.
 Please run the stack initialization command pointing to the `hub` manifest file:
 
 ```shell
-hub stack init -f hub-vm-app.yaml
+hub stack init -f hub-php-web-server.yaml
 ```
 
 The command will ask you to enter the ID of your GCP project.
@@ -36,7 +36,7 @@ hub stack configure
 ```
 
 Every `component` has a set of parameters (key-value pairs) such as VM imagr or Cloud SQL database name or user.
-Please explore `parameters` section of the [`hub-vm-app.yaml`](https://source.cloud.google.com/superhub/stacks/+/master:hub-vm-app.yaml) to see what parameters are available.
+Please explore `parameters` section of the [`hub-php-web-server.yaml`](https://github.com/agilestacks/google-stacks/blob/main/hub-php-web-server.yaml) to see what parameters are available.
 Any default value can be overridden.
 To get more information on how the components are implemented refer to their README files.
 
@@ -54,13 +54,13 @@ Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component o
 
 List of the components used in this stack:
 
-* [`SSL Certificate`](https://source.cloud.google.com/superhub/stacks/+/master:components/certificate)
-* [`VPC Network`](https://source.cloud.google.com/superhub/stacks/+/master:components/network)
-* [`Cloud SQL`](https://source.cloud.google.com/superhub/stacks/+/master:components/cloud-sql)
-* [`Cloud NAT`](https://source.cloud.google.com/superhub/stacks/+/master:components/cloud-nat)
-* [`Managed Instance Group`](https://source.cloud.google.com/superhub/stacks/+/master:components/managed-instance-group)
-* [`Load balancing`](https://source.cloud.google.com/superhub/stacks/+/master:components/load-balancer)
-* [`DNS Zone Record`](https://source.cloud.google.com/superhub/stacks/+/master:components/dns-zone-record-set)
+* [`SSL Certificate`](https://github.com/agilestacks/google-components/tree/main/certificate)
+* [`VPC Network`](https://github.com/agilestacks/google-components/tree/main/network)
+* [`Cloud SQL`](https://github.com/agilestacks/google-components/tree/main/cloud-sql)
+* [`Cloud NAT`](https://github.com/agilestacks/google-components/tree/main/cloud-nat)
+* [`Managed Instance Group`](https://github.com/agilestacks/google-components/tree/main/managed-instance-group)
+* [`Load balancing`](https://github.com/agilestacks/google-components/tree/main/load-balancer)
+* [`DNS Zone Record`](https://github.com/agilestacks/google-components/tree/main/dns-zone-record-set)
 
 ## Parameters
 
