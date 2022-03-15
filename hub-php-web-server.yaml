@@ -1,0 +1,204 @@
+version: 1
+kind: stack
+meta:
+  name: PHP Web Server Sandbox
+
+components:
+- name: certificate
+  source:
+    dir: components/certificate
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: certificate
+      ref: main     
+- name: network
+  source:
+    dir: components/network
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: network
+      ref: main    
+- name: cloud-sql
+  source:
+    dir: components/cloud-sql
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: cloud-sql
+      ref: main     
+- name: cloud-nat
+  source:
+    dir: components/cloud-nat
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: cloud-nat
+      ref: main       
+- name: managed-instance-group
+  source:
+    dir: components/managed-instance-group
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: managed-instance-group
+      ref: main      
+- name: load-balancer
+  source:
+    dir: components/load-balancer
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: load-balancer
+      ref: main      
+- name: dns-zone-record-set
+  source:
+    dir: components/dns-zone-record-set
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: dns-zone-record-set
+      ref: main     
+
+extensions:
+  configure:
+  - gcp
+  - env
+
+requires:
+- gcp
+
+lifecycle:
+  verbs:
+  - deploy
+  - undeploy
+  order:
+  - certificate
+  - network
+  - cloud-sql
+  - cloud-nat
+  - managed-instance-group
+  - load-balancer
+  - dns-zone-record-set
+
+parameters:
+- name: projectId
+  brief: |
+    ID of your GCP project
+  default: superhub
+  fromEnv: GCP_PROJECT_ID
+- name: gcpCredentialsFileLocation
+  brief: |
+    Location of a service account key file.
+    Required to provision services in GCP.
+    More information: https://cloud.google.com/iam/docs/creating-managing-service-accounts
+  default: /Users/oginskis/sa.json
+  fromEnv: GOOGLE_APPLICATION_CREDENTIALS
+- name: dns.name
+  fromEnv: HUB_STACK_NAME
+- name: dns.domain
+  brief: |
+    Well known parameter. Used as a stack identifier.
+    Also used by components that creates DNS records.
+  fromEnv: HUB_DOMAIN_NAME
+- name: stateBucketName
+  brief: |
+    Name of GCS bucket where Terraform enabled components upload their state.
+    It must be located in the current GCP project and the GCP service account
+    which is used to provision the stack must have permissions to access it.
+  default: tf_superhub
+  fromEnv: STATE_BUCKET
+- name: cloud.region
+  value: europe-west1
+- name: cloud.zone
+  value: europe-west1-b
+
+- name: component.certificate
+  parameters:
+  - name: name
+    value: ${dns.name}-selfsigned-cert
+
+- name: component.network
+  parameters:
+  - name: name
+    value: ${dns.name}
+  - name: autocreateSubnets
+    value: false
+  - name: subnetwork.cidr
+    value: 10.127.0.0/20
+
+- name: component.cloudNat
+  parameters:
+  - name: name
+    value: cloud-nat-lb-https-redirect
+  - name: network
+    value: ${component.network.name}
+
+- name: component.managedInstanceGroup
+  parameters:
+  - name: name
+    value: ${dns.name}
+  - name: subnetwork
+    value: ${component.network.name}
+  - name: service_account
+    value: vo-m1
+  - name: disk_type
+    value: pd-standard
+  - name: machine_type
+    value: e2-medium
+  - name: region
+    value: ${cloud.region}
+  - name: imageProject
+    value: debian-cloud
+  - name: image
+    value: debian-10-buster-v20220310
+  - name: port
+    value: 80
+  - name: target_size
+    value: 1
+  - name: subnetwork
+    value: ${component.network.subnetwork}
+    kind: link
+  - name: natRouterName
+    value: ${component.cloudNat.routerName}
+    kind: link
+  - name: webServer
+    value: nginx
+
+- name: component.loadBalancer
+  parameters:
+  - name: name
+    value: ${dns.name}
+  - name: network
+    value: ${component.network.name}
+  - name: sslCertificate
+    value: ${component.certificate.sslCertificate}
+    kind: link
+  - name: instanceGroup
+    value: ${component.managedInstanceGroup.instanceGroup}
+    kind: link
+
+- name: component.dnsZoneRecordSet
+  parameters:
+  - name: name
+    value: ""
+  - name: type
+    value: "A"
+  - name: value
+    value: ${component.loadBalancer.externalIp}
+    kind: link
+
+- name: component.cloudSql
+  parameters:
+  - name: name
+    value: ${dns.name}
+  - name: network
+    value: ${component.network.name}
+  - name: dbName
+    brief: Name of database which will be created during deployment of Cloud SQL component
+    fromEnv: DB_NAME
+  - name: dbUser
+    brief: Name of user which will be created during deployment of Cloud SQL component
+    fromEnv: DB_USER
+  - name: dbPassword
+    brief: User's password which will be created during deployment of Cloud SQL component
+    fromEnv: DB_PASSWORD
+    empty: allow
+
+outputs:
+- name: dns.domain
+  value: https://${dns.domain}
