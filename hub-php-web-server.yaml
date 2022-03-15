@@ -10,49 +10,49 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: certificate
-      ref: main     
+      ref: main
 - name: network
   source:
     dir: components/network
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: network
-      ref: main    
+      ref: main
 - name: cloud-sql
   source:
     dir: components/cloud-sql
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: cloud-sql
-      ref: main     
+      ref: main
 - name: cloud-nat
   source:
     dir: components/cloud-nat
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: cloud-nat
-      ref: main       
+      ref: main
 - name: managed-instance-group
   source:
     dir: components/managed-instance-group
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: managed-instance-group
-      ref: main      
+      ref: main
 - name: load-balancer
   source:
     dir: components/load-balancer
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: load-balancer
-      ref: main      
+      ref: main
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
-      ref: main     
+      ref: main
 
 extensions:
   configure:
@@ -163,6 +163,18 @@ parameters:
     kind: link
   - name: instanceGroup
     value: ${component.managedInstanceGroup.instanceGroup}
+    kind: link
+  - name: dbName
+    value: ${component.cloudSql.dbName}
+    kind: link
+  - name: dbUser
+    value: ${component.cloudSql.dbUser}
+    kind: link
+  - name: dbPassword
+    value: ${component.cloudSql.dbPassword}
+    kind: link
+  - name: dbHost
+    value: ${component.cloudSql.privateIp}
     kind: link
 
 - name: component.dnsZoneRecordSet
