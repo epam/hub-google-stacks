@@ -81,13 +81,6 @@ parameters:
     ID of your GCP project
   default: superhub
   fromEnv: GCP_PROJECT_ID
-- name: gcpCredentialsFileLocation
-  brief: |
-    Location of a service account key file.
-    Required to provision services in GCP.
-    More information: https://cloud.google.com/iam/docs/creating-managing-service-accounts
-  default: /Users/oginskis/sa.json
-  fromEnv: GOOGLE_APPLICATION_CREDENTIALS
 - name: dns.name
   fromEnv: HUB_STACK_NAME
 - name: dns.domain
