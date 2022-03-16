@@ -4,13 +4,6 @@ meta:
   name: PHP Web Server Sandbox
 
 components:
-- name: certificate
-  source:
-    dir: components/certificate
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: certificate
-      ref: main
 - name: network
   source:
     dir: components/network
@@ -67,7 +60,6 @@ lifecycle:
   - deploy
   - undeploy
   order:
-  - certificate
   - network
   - cloud-sql
   - cloud-nat
@@ -99,11 +91,6 @@ parameters:
   value: europe-west1
 - name: cloud.zone
   value: europe-west1-b
-
-- name: component.certificate
-  parameters:
-  - name: name
-    value: ${dns.name}-selfsigned-cert
 
 - name: component.network
   parameters:
@@ -170,9 +157,6 @@ parameters:
     value: ${dns.name}
   - name: network
     value: ${component.network.name}
-  - name: sslCertificate
-    value: ${component.certificate.sslCertificate}
-    kind: link
   - name: instanceGroup
     value: ${component.managedInstanceGroup.instanceGroup}
     kind: link
