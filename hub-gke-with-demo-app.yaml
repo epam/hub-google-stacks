@@ -75,7 +75,7 @@ parameters:
     - name: machineType
       value: e2-standard-4
     - name: nodeCount
-      value: 1
+      value: 2
     - name: version
       value: 1.21
 
