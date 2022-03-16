@@ -1,0 +1,89 @@
+version: 1
+kind: stack
+meta:
+  name: GKE Sandbox Stack
+  brief: GKE Sandbox Stack
+
+components:
+- name: gke
+  source:
+    dir: components/gke-gcloud
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: gke-gcloud
+      ref: main
+- name: nginx
+  source:
+    dir: components/nginx
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: nginx
+      ref: main        
+- name: external-dns
+  source:
+    dir: components/external-dns  
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: external-dns
+      ref: main            
+- name: online-boutique-app
+  source:
+    dir: components/online-boutique-app
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: online-boutique-app
+      ref: main    
+       
+
+extensions:
+  configure:
+    - gcp
+    - env
+
+requires:
+- gcp
+
+lifecycle:
+  verbs:
+  - deploy
+  - undeploy
+  order:
+  - gke
+  - nginx
+  - external-dns
+  - online-boutique-app
+
+parameters:
+  - name: projectId
+    default: supergke
+    fromEnv: GCP_PROJECT_ID
+  - name: dns.domain
+    default: c1.stacks.oginskis.lv
+    fromEnv: HUB_DOMAIN_NAME
+  - name: stateBucketName
+    default: superhub_state
+    fromEnv: STATE_BUCKET
+  - name: hubStackName
+    fromEnv: HUB_STACK_NAME    
+
+  - name: component.gke
+    parameters:
+    - name: name
+      value: ${hubStackName}
+    - name: zone
+      value: us-central1-a
+    - name: machineType
+      value: e2-standard-4
+    - name: nodeCount
+      value: 1
+    - name: version
+      value: 1.21
+
+  - name: component.onlineBoutiqueApp
+    parameters:
+    - name: host
+      value: boutique.${dns.domain}
+
+outputs:
+- name: component.onlineBoutiqueApp.host
+- name: component.gke.url
