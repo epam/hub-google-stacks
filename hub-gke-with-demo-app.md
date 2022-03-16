@@ -4,7 +4,14 @@
 
 GKE Sandbox with ingress controller and demo application
 
-Click `Start` to go through the installation instructions.
+List of the components used in this sandbox:
+
+* [`GKE Cluster`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud)
+* [`Nginx - ingress controller`](https://github.com/agilestacks/google-components/tree/main/nginx)
+* [`External DNS - dns record provisioner`](https://github.com/agilestacks/google-components/tree/main/external-dns)
+* [`Online Boutique - Demo APP`](https://github.com/agilestacks/google-components/tree/main/online-boutique-app)
+
+Click `Start` to go through the sandbox installation instructions.
 
 ## Prerequisites
 
@@ -79,15 +86,6 @@ Run `hub stack undeploy` to undeploy the sandbox
 Run `hub stack deploy -c <name-of-the-component>` to deploy a specific component on the sandbox
 
 Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component on the sandbox
-
-## Components
-
-List of the components used in this sandbox:
-
-* [`GKE Cluster`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud)
-* [`Nginx - ingress controller`](https://github.com/agilestacks/google-components/tree/main/nginx)
-* [`External DNS - dns record provisioner`](https://github.com/agilestacks/google-components/tree/main/external-dns)
-* [`Online Boutique - Demo APP`](https://github.com/agilestacks/google-components/tree/main/online-boutique-app)
 
 ## Parameters
 
