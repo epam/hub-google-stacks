@@ -104,7 +104,7 @@ parameters:
 - name: component.cloudNat
   parameters:
   - name: name
-    value: cloud-nat-lb-https-redirect
+    value: ${dns.name}-cloud-nat-lb-https-redirect
   - name: network
     value: ${component.network.name}
 
