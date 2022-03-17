@@ -5,9 +5,18 @@
 GKE Sandbox with Anthos Service Mesh, ingress controller, and demo application.
 <p align="left">
 <img src="gke-with-anthos.png" width="400" >
-</p>  
+</p>
 
-Click `Start` to go through the installation instructions.
+List of the components used in this sandbox:
+
+* [`GKE Cluster`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud)
+* [`GKE Node Pool`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud-node-pool)
+* [`Anthos Service Mesh`](https://github.com/agilestacks/google-components/tree/main/anthos-service-mesh)
+* [`Anthos Ingress Gateway`](https://github.com/agilestacks/google-components/tree/main/anthos-ingress-gateway)
+* [`DNS Zone Record`](https://github.com/agilestacks/google-components/tree/main/dns-zone-record-set)
+* [`Online Boutique - Demo APP`](https://github.com/agilestacks/google-components/tree/main/online-boutique-app)
+
+Click `Start` to go through the installation instructions. 
 
 ## Prerequisites
 
@@ -82,17 +91,6 @@ Run `hub stack undeploy` to undeploy the sandbox
 Run `hub stack deploy -c <name-of-the-component>` to deploy a specific component on the sandbox
 
 Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component on the sandbox
-
-## Components
-
-List of the components used in this sandbox:
-
-* [`GKE Cluster`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud)
-* [`GKE Node Pool`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud-node-pool)
-* [`Anthos Service Mesh`](https://github.com/agilestacks/google-components/tree/main/anthos-service-mesh)
-* [`Anthos Ingress Gateway`](https://github.com/agilestacks/google-components/tree/main/anthos-ingress-gateway)
-* [`DNS Zone Record`](https://github.com/agilestacks/google-components/tree/main/dns-zone-record-set)
-* [`Online Boutique - Demo APP`](https://github.com/agilestacks/google-components/tree/main/online-boutique-app)
 
 ## Parameters
 
