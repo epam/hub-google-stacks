@@ -2,7 +2,10 @@
 
 ## Description
 
-GKE Sandbox with Anthos Service Mesh, ingress controller, and demo application
+GKE Sandbox with Anthos Service Mesh, ingress controller, and demo application.
+<p align="left">
+<img src="gke-with-anthos.png" width="400" >
+</p>  
 
 Click `Start` to go through the installation instructions.
 
