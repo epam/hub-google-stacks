@@ -49,7 +49,7 @@ hub stack configure
 If any of the sandbox components would require additional configuration parameters, users will be asked to provide them.
 
 Every `component` has a set of parameters (key-value pairs) such as GKE cluster name or number of nodes in a node pool.
-Please explore `parameters` section of the [`hub-gke-with-demo-app.yaml`](https://github.com/agilestacks/google-stacks/blob/main/hub-gke-with-demo-app-cs.yaml) to see what parameters are available.
+Please explore `parameters` section of the [`hub-gke-with-demo-app.yaml`](https://github.com/agilestacks/google-stacks/blob/main/hub-gke-with-demo-app.yaml) to see what parameters are available.
 Any default value can be overridden.
 To get more information on how the components are implemented refer to their README files.
 
