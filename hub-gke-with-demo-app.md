@@ -3,6 +3,9 @@
 ## Description
 
 GKE Sandbox with ingress controller and demo application
+<p align="left">
+<img src="gke-without-anthos.png" width="400" >
+</p>
 
 List of the components used in this sandbox:
 
