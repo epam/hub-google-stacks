@@ -54,13 +54,14 @@ Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component o
 
 List of the components used in this stack:
 
-* [`SSL Certificate`](https://github.com/agilestacks/google-components/tree/main/certificate)
+* [`SSL Certificate`](https://github.com/agilestacks/google-components/tree/main/gcp-managed-certificate)
 * [`VPC Network`](https://github.com/agilestacks/google-components/tree/main/network)
 * [`Cloud SQL`](https://github.com/agilestacks/google-components/tree/main/cloud-sql)
 * [`Cloud NAT`](https://github.com/agilestacks/google-components/tree/main/cloud-nat)
 * [`Managed Instance Group`](https://github.com/agilestacks/google-components/tree/main/managed-instance-group)
 * [`Load balancing`](https://github.com/agilestacks/google-components/tree/main/load-balancer)
 * [`DNS Zone Record`](https://github.com/agilestacks/google-components/tree/main/dns-zone-record-set)
+* [`Load generator`](https://github.com/agilestacks/google-components/tree/main/wp-loadgenerator)
 
 ## Parameters
 
