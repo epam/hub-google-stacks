@@ -53,6 +53,13 @@ components:
       remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
       ref: main
+- name: wp-loadgenerator
+  source:
+    dir: components/wp-loadgenerator
+    git:
+      remote: https://github.com/agilestacks/google-components.git
+      subDir: wp-loadgenerator
+      ref: main
 
 extensions:
   configure:
@@ -74,6 +81,7 @@ lifecycle:
   - managed-instance-group
   - load-balancer
   - dns-zone-record-set
+  - wp-loadgenerator
 
 parameters:
 - name: projectId
@@ -140,7 +148,7 @@ parameters:
   - name: port
     value: 80
   - name: target_size
-    value: 1
+    value: 2
   - name: subnetwork
     value: ${component.network.subnetwork}
     kind: link
