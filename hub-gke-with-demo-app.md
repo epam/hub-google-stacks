@@ -4,7 +4,7 @@
 
 GKE Sandbox with ingress controller and demo application
 <p align="left">
-<img src="gke-without-anthos.png" width="400" >
+<img src="images/gke-without-anthos.png" width="400" >
 </p>
 
 List of the components used in this sandbox:
@@ -93,3 +93,7 @@ Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component o
 ## Parameters
 
 TBD: List of sandbox params to override
+
+## Architecture Diagram
+
+![GKE Sandbox Architecture](images/gke_nginx_diagram.png)

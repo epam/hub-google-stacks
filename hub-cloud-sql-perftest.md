@@ -30,7 +30,7 @@ Please run the initialization command pointing to the `hub` manifest file:
 hub stack init -f hub-cloud-sql-perftest.yaml
 ```
 
-The command will ask you to enter the ID of your GCP project.
+The command will prompt you to enter the ID of your GCP project.
 
 Some of the components create DNS records (for easier access to the provisioned services) and some of them also need a GCS bucket to store their states.
 The tool (`hub cli`) we use to provision sandboxes itself produces a state file that must be uploaded to the cloud.
@@ -86,3 +86,8 @@ Run `hub stack deploy -c k6-sql-load-test` to re-run the load test.
 
 Feel free to adjust parameter values in [`hub-cloud-sql-perftest.yaml`](https://github.com/agilestacks/google-stacks/blob/main/hub-cloud-sql-perftest.yaml)
 such as `component.k6SQLloadTest.testDuration` or `component.k6SQLloadTest.numberOfUsers` to change test behaviour.
+
+## Architecture Diagram
+
+![Cloud SQL Sandbox Architecture](images/cloud_sql_diagram.png)
+

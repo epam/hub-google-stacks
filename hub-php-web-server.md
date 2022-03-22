@@ -65,3 +65,7 @@ List of the components used in this stack:
 ## Parameters
 
 TBD: List of stack params to override
+
+## Architecture Diagram
+
+![Web Server VM Architecture](images/web_server_diagram.png)
