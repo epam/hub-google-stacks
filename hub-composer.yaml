@@ -1,0 +1,68 @@
+hversion: 1
+kind: stack
+meta:
+  name: Composer Environment Sandbox
+
+components:
+  - name: network
+    source:
+      dir: components/network
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: network
+  - name: composer
+    depends:
+      - network
+    source:
+      dir: components/composer
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: composer-environment
+
+requires:
+  - gcp
+
+extensions:
+  configure:
+    - gcp
+    - env
+
+lifecycle:
+  order:
+    - network
+    - composer
+
+parameters:
+  - name: dns.domain
+    fromEnv: HUB_DOMAIN_NAME
+  - name: dns.name
+    fromEnv: HUB_STACK_NAME
+  - name: cloud.region
+    fromEnv: GOOGLE_REGION
+  - name: cloud.zone
+    fromEnv: GOOGLE_ZONE
+  - name: projectId
+    fromEnv: GOOGLE_PROJECT
+  - name: stateBucketName
+    fromEnv: HUB_STATE_BUCKET
+  - name: gke.nodeCount
+    value: 3
+    brief: GKE cluster nodes count
+  - name: composer.version
+    default: v1
+    fromEnv: COMPOSER_VERSION
+    brief: Version of composer environment (v1 or v2)
+
+  - name: component.network
+    parameters:
+      - name: name
+        value: ${dns.name}
+      - name: autocreateSubnets
+        value: false
+      - name: subnetwork.cidr
+        value: 10.127.0.0/20
+
+outputs:
+  - name: composer.airflowUrl
+  - name: composer.gcsBucket
+  - name: composer.gkeCluster
