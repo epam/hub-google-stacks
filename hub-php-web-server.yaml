@@ -84,14 +84,12 @@ lifecycle:
   - wp-loadgenerator
 
 parameters:
+- name: projectId
+  fromEnv: GOOGLE_PROJECT
+  brief: Reference to current GCP project
 - name: hub.deployedBy
   fromEnv: USER
   brief: This parameter will help to identify deployments done by the user
-- name: projectId
-  brief: |
-    ID of your GCP project
-  default: superhub
-  fromEnv: GCP_PROJECT_ID
 - name: dns.name
   fromEnv: HUB_STACK_NAME
 - name: dns.domain
