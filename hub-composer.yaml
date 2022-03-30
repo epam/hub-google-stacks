@@ -63,6 +63,6 @@ parameters:
         value: 10.127.0.0/20
 
 outputs:
-  - name: composer.airflowUrl
-  - name: composer.gcsBucket
-  - name: composer.gkeCluster
+  - name: composer.airflow.url
+  - name: composer.gcs.bucket
+  - name: composer.gke.cluster
