@@ -1,0 +1,87 @@
+version: 1
+kind: stack
+meta:
+  name: Dataflow example with Composer Environment Sandbox
+
+components:
+  - name: network
+    source:
+      dir: components/network
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: network
+  - name: composer
+    depends:
+      - network
+    source:
+      dir: components/composer-environment
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: composer-environment
+  - name: example
+    depends:
+      - network
+    source:
+      dir: components/dataflow-example
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: dataflow-example
+
+requires:
+  - gcp
+
+extensions:
+  configure:
+    - gcp
+    - env
+
+lifecycle:
+  order:
+    - network
+    - composer
+    - example
+
+parameters:
+  - name: dns.domain
+    fromEnv: HUB_DOMAIN_NAME
+  - name: dns.name
+    fromEnv: HUB_STACK_NAME
+  - name: cloud.region
+    fromEnv: GOOGLE_REGION
+  - name: cloud.zone
+    fromEnv: GOOGLE_ZONE
+  - name: projectId
+    fromEnv: GOOGLE_PROJECT
+  - name: stateBucketName
+    fromEnv: HUB_STATE_BUCKET
+  - name: gke.nodeCount
+    value: 3
+    brief: GKE cluster nodes count
+  - name: composer.envName
+    value: ${dns.name}-test-composer
+  - name: composer.version
+    default: v1
+    fromEnv: COMPOSER_VERSION
+    brief: Version of composer environment (v1 or v2)
+
+  - name: component.network
+    parameters:
+      - name: name
+        value: ${dns.name}
+      - name: autocreateSubnets
+        value: false
+      - name: subnetwork.cidr
+        value: 10.127.0.0/20
+
+  - name: dataflow-example
+    parameters:
+      - name: composer.envName
+        value: ${composer.envName}
+      - name: composer.bucket
+        kind: link
+        value: ${composer.gcs.bucket}
+
+outputs:
+  - name: composer.airflow.url
+  - name: composer.gcs.bucket
+  - name: composer.gke.cluster
