@@ -73,8 +73,12 @@ parameters:
       - name: subnetwork.cidr
         value: 10.127.0.0/20
 
-  - name: dataflow-example
+  - name: dataflow
     parameters:
+      - name: bigquery.location
+        value: EU
+      - name: bigquery.deleteContentsOnDestroy
+        value: true
       - name: composer.envName
         value: ${composer.envName}
       - name: composer.bucket
