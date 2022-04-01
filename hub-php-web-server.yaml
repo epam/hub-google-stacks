@@ -6,60 +6,56 @@ meta:
 components:
 - name: ssl-cert
   source:
-    dir: components/gcp-managed-certificate
+    dir: components/acme-certificate
     git:
       remote: https://github.com/agilestacks/google-components.git
-      subDir: gcp-managed-certificate
-      ref: main
+      subDir: acme-certificate
+  depends:
+  - network
 - name: network
   source:
     dir: components/network
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: network
-      ref: main
 - name: cloud-sql
   source:
     dir: components/cloud-sql
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: cloud-sql
-      ref: main
 - name: cloud-nat
   source:
     dir: components/cloud-nat
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: cloud-nat
-      ref: main
 - name: managed-instance-group
   source:
     dir: components/managed-instance-group
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: managed-instance-group
-      ref: main
 - name: load-balancer
   source:
     dir: components/load-balancer
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: load-balancer
-      ref: main
+  depends:
+  - ssl-cert
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
-      ref: main
 - name: wp-loadgenerator
   source:
     dir: components/wp-loadgenerator
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: wp-loadgenerator
-      ref: main
 
 extensions:
   configure:
@@ -171,18 +167,30 @@ parameters:
     value: ${component.cloudSql.privateIp}
     kind: link
 
+- name: certificate
+  parameters:
+  - name: commonName
+    value: ${dns.domain}
+  - name: acme.email
+    default: admin@superhub.io
+    fromEnv: ACME_EMAIL
+    brief: email associated with acme registration
+  - name: acme.endpoint
+    brief: ACME endpoint (letsencrypt production)
+    value: https://acme-v02.api.letsencrypt.org/directory
+
 - name: component.loadBalancer
   parameters:
   - name: name
     value: ${dns.name}
-  - name: network
-    value: ${component.network.name}
   - name: instanceGroup
     value: ${component.managedInstanceGroup.instanceGroup}
     kind: link
   - name: sslCertificate
-    value: ${component.certificate.sslCertificate}
+    value: "${certificate.google.selfLink}"
     kind: link
+  - name: backendHealthPath
+    value: /readme.html
 
 - name: component.dnsZoneRecordSet
   parameters:
