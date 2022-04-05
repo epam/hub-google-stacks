@@ -96,3 +96,8 @@ TODO: we may want to delegate this to the `composer` component `post-deploy`. De
 
 * [Cloud Composer Guide](https://cloud.google.com/composer/docs/how-to)
 * [Creating Environment](https://cloud.google.com/composer/docs/how-to/managing/creating)
+
+## Architecture Diagram
+
+![Composer Sandbox Architecture](images/composer_diagram.png)
+
