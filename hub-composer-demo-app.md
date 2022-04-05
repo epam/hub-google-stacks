@@ -17,13 +17,17 @@ List of the components used in this sandbox:
 Before you can deploy the sandbox please run the initialization command pointing to the `hub` manifest file:
 
 ```shell
-hub stack init -f "hub-composer-demo-app.yaml"
+hub stack init -f hub-composer-demo-app.yaml
+```
+The command will prompt you to enter the ID of your GCP project.
+
+Next, please run the following command to configure the environment. You will be prompted for Composer version - use values `v1` or `v2`.
+
+```shell
 hub stack configure
 ```
 
-You will be prompted for Composer version - use values `v1` or `v2`. Read more about configuration options here: https://cloud.google.com/composer/docs/how-to/managing/creating
-
-The following additional parameters can be modified in `hub-composer-demo-app.yaml` file
+Additional parameters can be modified in `hub-composer-demo-app.yaml` file
 
 | Name      | Description | Default Value |
 | :-------- | :--------   | :-------- |
@@ -31,6 +35,8 @@ The following additional parameters can be modified in `hub-composer-demo-app.ya
 | `gke.machineType` | Number of GKE nodes for compose environment | `n1-standard-1` | 
 | `composer.version` | Version of composer (`v1` or `v2`) when `v2` | `v1` |
 | `component.network.subnetworkCidr` | Target environment subnet address range | `10.127.0.0/20` |
+
+You can read about configuration options here: https://cloud.google.com/composer/docs/how-to/managing/creating
 
 
 ## Deployment
