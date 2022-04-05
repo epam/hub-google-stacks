@@ -17,13 +17,13 @@ List of the components used in this sandbox:
 Before you can deploy the sandbox please run the initialization command pointing to the `hub` manifest file:
 
 ```shell
-hub stack init -f "hub-composer.yaml"
+hub stack init -f "hub-composer-demo-app.yaml"
 hub stack configure
 ```
 
 You will be prompted for Composer version - use values `v1` or `v2`. Read more about configuration options here: https://cloud.google.com/composer/docs/how-to/managing/creating
 
-The following additional parameters can be modified in `hub-composer.yaml` file
+The following additional parameters can be modified in `hub-composer-demo-app.yaml` file
 
 | Name      | Description | Default Value |
 | :-------- | :--------   | :-------- |
@@ -35,7 +35,7 @@ The following additional parameters can be modified in `hub-composer.yaml` file
 
 ## Deployment
 
-Once you are happy with the configuration, use the following command to deploy a sandbox
+Once you are done with the configuration, use the following command to deploy a sandbox
 
 ```shell
 hub stack deploy
