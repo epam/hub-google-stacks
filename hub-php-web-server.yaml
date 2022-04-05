@@ -160,8 +160,8 @@ parameters:
   - name: dbUser
     value: ${component.cloudSql.dbUser}
     kind: link
-  - name: dbPassword
-    value: ${component.cloudSql.dbPassword}
+  - name: password
+    value: ${component.cloudSql.password}
     kind: link
   - name: dbHost
     value: ${component.cloudSql.privateIp}
@@ -216,7 +216,7 @@ parameters:
     brief: Name of user which will be created during deployment of Cloud SQL component
     fromEnv: DB_USER
     default: dbuser
-  - name: dbPassword
+  - name: password
     brief: User's password which will be created during deployment of Cloud SQL component
     fromEnv: DB_PASSWORD
   - name: version
