@@ -101,9 +101,11 @@ parameters:
   default: tf_superhub
   fromEnv: STATE_BUCKET
 - name: cloud.region
-  value: europe-west1
+  fromEnv: GOOGLE_REGION
+  default: europe-west1
 - name: cloud.zone
-  value: europe-west1-b
+  fromEnv: GOOGLE_ZONE
+  default: europe-west1-b
 
 - name: component.certificate.name
   value: ${dns.name}
@@ -136,8 +138,6 @@ parameters:
     value: pd-standard
   - name: machine_type
     value: e2-medium
-  - name: region
-    value: ${cloud.region}
   - name: imageProject
     value: debian-cloud
   - name: image
