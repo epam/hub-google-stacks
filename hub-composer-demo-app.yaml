@@ -75,15 +75,23 @@ parameters:
 
   - name: dataflow
     parameters:
-      - name: bigquery.location
-        value: EU
-      - name: bigquery.deleteContentsOnDestroy
-        value: true
-      - name: composer.envName
-        value: ${composer.envName}
-      - name: composer.bucket
-        kind: link
-        value: ${composer.gcs.bucket}
+      - name: bigquery
+        parameters:
+        - name: datasetName
+          value: ${dns.name}_average_weather
+        - name: tableName
+          value: average_weather
+        - name: location
+          value: EU
+        - name: deleteContentsOnDestroy
+          value: true
+      - name: composer
+        parameters:
+        - name: envName
+          value: ${composer.envName}
+        - name: bucket
+          kind: link
+          value: ${composer.gcs.bucket}
 
 outputs:
   - name: composer.airflow.url
