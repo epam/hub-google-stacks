@@ -82,7 +82,7 @@ parameters:
         - name: tableName
           value: average_weather
         - name: location
-          value: EU
+          value: ${cloud.region}
         - name: deleteContentsOnDestroy
           value: true
       - name: composer
@@ -92,6 +92,8 @@ parameters:
         - name: bucket
           kind: link
           value: ${composer.gcs.bucket}
+        - name: version
+          value: ${composer.version}
 
 outputs:
   - name: composer.airflow.url
