@@ -3,41 +3,34 @@ kind: stack
 meta:
   name: Cloud SQL with performance testing
   brief: Cloud SQL with performance testing
+
 components:
-- name: network
-  source:
-    dir: components/network
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: network
-      ref: main
-- name: cloud-sql 
+- name: cloud-sql
   source:
     dir: components/cloud-sql
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: cloud-sql
-      ref: main
 - name: k6-sql-load-test
   source:
     dir: components/k6-sql-load-test
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: k6-sql-load-test
-      ref: main
 
 extensions:
   configure:
     - gcp
     - env
+
 requires:
 - gcp
+
 lifecycle:
   verbs:
   - deploy
   - undeploy
   order:
-  - network
   - cloud-sql
   - k6-sql-load-test
 
@@ -53,57 +46,45 @@ parameters:
   fromEnv: STATE_BUCKET
 - name: hubStackName
   fromEnv: HUB_STACK_NAME
-
 - name: cloud.region
+  fromEnv: GOOGLE_REGION
   value: us-central1
 - name: cloud.zone
+  fromEnv: GOOGLE_ZONE
   value: us-central1-a
-
-- name: component.network
-  parameters:
-  - name: name
-    value: ${hubStackName}
-  - name: autocreateSubnets
-    value: false
-  - name: subnetwork.cidr
-    value: 10.127.0.0/20
 
 - name: component.cloudSql
   parameters:
   - name: name
     value: ${hubStackName}
   - name: version
-    value: POSTGRES_12
-  - name: network
-    value: ${component.network.name}
+    value: MYSQL_5_7
   - name: dbName
     value: ${hubStackName}
   - name: dbUser
     value: ${hubStackName}-user
-  - name: publicIP
-    value: true
+  - name: password
+    fromEnv: DB_PASSWORD
 
 - name: component.k6SQLloadTest
   parameters:
   - name: kind
     value: mysql
   - name: dbHost
-    kind: link  
+    kind: link
     value: ${component.cloudSql.publicIp}
   - name: dbName
     value: ${component.cloudSql.dbName}
   - name: dbUser
     value: ${component.cloudSql.dbUser}
-  - name: dbPassword 
-    kind: link  
-    value: ${component.cloudSql.dbPassword}    
+  - name: password
+    value: ${component.cloudSql.password}
   - name: testDuration
     value: 100s
   - name: numberOfUsers
-    value: 1000
+    value: 100
 
 outputs:
 - name: component.cloudSql.dbName
 - name: component.cloudSql.dbUser
-- name: component.cloudSql.privateIp
 - name: component.cloudSql.publicIp
