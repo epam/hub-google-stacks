@@ -1,0 +1,119 @@
+version: 1
+kind: stack
+meta:
+  name: Cloud SQL Examples
+
+components:
+  - name: network
+    source:
+      dir: components/network
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: network
+  - name: mssql
+    source:
+      dir: components/cloud-sql
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: cloud-sql
+  - name: mysql
+    source:
+      dir: components/cloud-sql
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: cloud-sql
+  - name: postgresql
+    source:
+      dir: components/cloud-sql
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: cloud-sql
+
+requires:
+  - gcp
+
+extensions:
+  configure:
+    - gcp
+    - env
+
+lifecycle:
+  order:
+    - network
+    - mssql
+    - mysql
+    - postgresql
+
+parameters:
+  - name: dns.domain
+    fromEnv: HUB_DOMAIN_NAME
+  - name: dns.name
+    fromEnv: HUB_STACK_NAME
+  - name: cloud.region
+    fromEnv: GOOGLE_REGION
+  - name: cloud.zone
+    fromEnv: GOOGLE_ZONE
+  - name: projectId
+    fromEnv: GOOGLE_PROJECT
+  - name: stateBucketName
+    fromEnv: HUB_STATE_BUCKET
+
+  - name: component.network
+    parameters:
+      - name: name
+        value: ${dns.name}
+      - name: autocreateSubnets
+        value: false
+      - name: subnetwork.cidr
+        value: 10.127.0.0/20
+
+  - name: component.cloudSql
+    parameters:
+      - name: name
+        value: ${dns.name}
+      - name: network
+        value: ${component.network.name}
+      - name: dbName
+        brief: Name of database which will be created during deployment of Cloud SQL component
+        fromEnv: DB_NAME
+        default: sandbox
+      - name: dbUser
+        brief: Name of user which will be created during deployment of Cloud SQL component
+        fromEnv: DB_USER
+        default: dbuser
+      - name: password
+        brief: User's password which will be created during deployment of Cloud SQL component
+        fromEnv: DB_PASSWORD
+      - name: publicIP
+        value: false
+      - name: allocatedIpRangeName
+        kind: link
+        value: ${component.network.cloudSql.allocatedIpRangeName}
+
+  - name: component.cloudSql.version
+    component: mssql
+    value: SQLSERVER_2017_STANDARD
+
+  - name: component.cloudSql.version
+    component: mysql
+    value: MYSQL_5_7
+
+  - name: component.cloudSql.version
+    component: postgresql
+    value: POSTGRES_12
+
+outputs:
+  - name: mssql:component.cloudSql.dbName
+  - name: mssql:component.cloudSql.dbUser
+  - name: mssql:component.cloudSql.privateIp
+  - name: mssql:component.cloudSql.publicIp
+
+  - name: mysql:component.cloudSql.dbName
+  - name: mysql:component.cloudSql.dbUser
+  - name: mysql:component.cloudSql.privateIp
+  - name: mysql:component.cloudSql.publicIp
+
+  - name: postgresql:component.cloudSql.dbName
+  - name: postgresql:component.cloudSql.dbUser
+  - name: postgresql:component.cloudSql.privateIp
+  - name: postgresql:component.cloudSql.publicIp
