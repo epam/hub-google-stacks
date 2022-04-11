@@ -11,21 +11,18 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
-      ref: main
 - name: gke-gcloud-node-pool
   source:
     dir: components/gke-gcloud-node-pool
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud-node-pool
-      ref: main
 - name: anthos-service-mesh
   source:
     dir: components/anthos-service-mesh
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-service-mesh
-      ref: main
 - name: anthos-ingress-gateway
   source:
     dir: components/anthos-ingress-gateway
@@ -39,14 +36,12 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
-      ref: main
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
-      ref: main
 
 extensions:
   configure:

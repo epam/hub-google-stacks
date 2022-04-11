@@ -11,29 +11,24 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
-      ref: main
 - name: nginx
   source:
     dir: components/nginx
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: nginx
-      ref: main        
 - name: external-dns
   source:
-    dir: components/external-dns  
+    dir: components/external-dns
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: external-dns
-      ref: main            
 - name: online-boutique-app
   source:
     dir: components/online-boutique-app
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
-      ref: main    
-       
 
 extensions:
   configure:
@@ -64,7 +59,7 @@ parameters:
     default: superhub_state
     fromEnv: STATE_BUCKET
   - name: hubStackName
-    fromEnv: HUB_STACK_NAME    
+    fromEnv: HUB_STACK_NAME
 
   - name: component.gke
     parameters:

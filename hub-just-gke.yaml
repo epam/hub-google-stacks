@@ -4,13 +4,12 @@ meta:
   name: GKE Sandbox Stack
   brief: GKE Sandbox Stack
 components:
-- name: gke-gcloud 
+- name: gke-gcloud
   source:
     dir: components/gke-gcloud
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
-      ref: main
 extensions:
   configure:
     - gcp
