@@ -11,42 +11,42 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
-      ref: main    
+      ref: main
 - name: gke-gcloud-node-pool
   source:
     dir: components/gke-gcloud-node-pool
     git:
       remote: https://github.com/agilestacks/google-components.git
-      subDir: gke-gcloud-node-pool 
-      ref: main    
+      subDir: gke-gcloud-node-pool
+      ref: main
 - name: anthos-service-mesh
   source:
     dir: components/anthos-service-mesh
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-service-mesh
-      ref: main      
+      ref: main
 - name: anthos-ingress-gateway
   source:
     dir: components/anthos-ingress-gateway
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-ingress-gateway
-      ref: main      
+      ref: main
 - name: online-boutique-app
   source:
     dir: components/online-boutique-app
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
-      ref: main      
+      ref: main
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
-      ref: main      
+      ref: main
 
 extensions:
   configure:
@@ -79,7 +79,7 @@ parameters:
     default: superhub_state
     fromEnv: STATE_BUCKET
   - name: hubStackName
-    fromEnv: HUB_STACK_NAME    
+    fromEnv: HUB_STACK_NAME
 
   - name: component.gke
     parameters:
@@ -128,6 +128,8 @@ parameters:
     - name: value
       value: ${component.anthosIngressGateway.ip}
       kind: link
+    - name: zoneName
+      value: ${dns.name}
 
   - name: component.onlineBoutiqueApp
     parameters:

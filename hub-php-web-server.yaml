@@ -197,6 +197,8 @@ parameters:
   - name: value
     value: ${component.loadBalancer.externalIp}
     kind: link
+  - name: zoneName
+    value: ${dns.name}
 
 - name: component.cloudSql
   parameters:
