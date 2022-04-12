@@ -27,16 +27,33 @@ Next, please run the following command to configure the environment. You will be
 hub stack configure
 ```
 
-Additional parameters can be modified in `hub-composer-demo-app.yaml` file
+### How to recover the configuration of an existing sandbox?
 
-| Name      | Description | Default Value |
-| :-------- | :--------   | :-------- |
-| `gke.nodeCount` | Number of GKE nodes for compose environment. Must be at least `3` | `3` |
-| `gke.machineType` | Number of GKE nodes for compose environment | `n1-standard-1` | 
-| `composer.version` | Version of composer (`v1` or `v2`) when `v2` | `v1` |
-| `component.network.subnetworkCidr` | Target environment subnet address range | `10.127.0.0/20` |
+Google Cloud Shell environments are ephemeral,
+which means any files stored locally on the Cloud Shell machine will be lost when
+the machine restarts.
+Luckily, we store sandbox state files in the Cloud,
+which means, if we lose a local state, we can always recover it from the Cloud.
 
-You can read about configuration options here: https://cloud.google.com/composer/docs/how-to/managing/creating
+Execute the following commands to recover a state of a sandbox:
+
+```shell
+hub stack init -f hub-composer-demo-app.yaml -s {GCS path to a state file of the sanbox}
+hub stack configure
+```
+
+Please browse GCS buckets in your project to find the right one by the convention below:
+
+GCS path naming convention:
+
+*gs://{sandbox state bucket}/{stack dns name}/hub/hub.state*
+
+Example:
+
+*gs://superhub-superhub/overconfident-corvo-216.epam.devops.delivery/hub/hub.state*
+
+After state is recovered, you can undeploy or update your sandbox.
+
 
 
 ## Deployment
@@ -97,6 +114,20 @@ k cluster-info
 ```
 
 TODO: we may want to delegate this to the `composer` component `post-deploy`. Depends if we bother to deploy on top anything else, (i.e. Ingress Controller, user apps etc as set of components)
+
+## Additional Parameters
+
+Additional parameters can be modified in `hub-composer-demo-app.yaml` file
+
+| Name      | Description | Default Value |
+| :-------- | :--------   | :-------- |
+| `gke.nodeCount` | Number of GKE nodes for compose environment. Must be at least `3` | `3` |
+| `gke.machineType` | Number of GKE nodes for compose environment | `n1-standard-1` | 
+| `composer.version` | Version of composer (`v1` or `v2`) when `v2` | `v1` |
+| `component.network.subnetworkCidr` | Target environment subnet address range | `10.127.0.0/20` |
+
+You can read about configuration options here: https://cloud.google.com/composer/docs/how-to/managing/creating
+
 
 ## See also
 
