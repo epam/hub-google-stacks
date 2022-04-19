@@ -16,7 +16,7 @@ List of the components used in this sandbox:
 * [`DNS Zone Record`](https://github.com/agilestacks/google-components/tree/main/dns-zone-record-set)
 * [`Online Boutique - Demo APP`](https://github.com/agilestacks/google-components/tree/main/online-boutique-app)
 
-Click `Start` to go through the installation instructions. 
+Click `Start` to go through the installation instructions.
 
 ## Prerequisites
 
@@ -98,4 +98,4 @@ TBD: List of sandbox params to override
 
 ## Architecture Diagram
 
-![GKE Sandbox Architecture](images/gke_asm_diagram.png)
+![GKE Sandbox Architecture](/images/gke_asm_diagram.png)
