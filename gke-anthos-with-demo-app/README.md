@@ -4,7 +4,7 @@
 
 GKE Sandbox with Anthos Service Mesh, ingress controller, and demo application.
 <p align="left">
-<img src="images/gke-with-anthos.png" width="400" >
+<img src="/images/gke-with-anthos.png" width="400" >
 </p>
 
 List of the components used in this sandbox:
@@ -95,6 +95,10 @@ Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component o
 ## Parameters
 
 TBD: List of sandbox params to override
+
+## Demo App Source Code and Documentation
+
+Detailed documentation and source code for the microservices demo app on GKE is available here: https://github.com/GoogleCloudPlatform/microservices-demo/
 
 ## Architecture Diagram
 
