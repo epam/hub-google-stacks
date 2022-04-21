@@ -3,9 +3,8 @@
 ## Description
 
 GKE Sandbox with Anthos Service Mesh, ingress controller, and demo application.
-<p align="left">
-<img src="/images/gke-with-anthos.png" width="400" >
-</p>
+
+![Schema](https://google.devops.delivery/images/gke-with-anthos.png)
 
 List of the components used in this sandbox:
 
@@ -16,90 +15,107 @@ List of the components used in this sandbox:
 * [`DNS Zone Record`](https://github.com/agilestacks/google-components/tree/main/dns-zone-record-set)
 * [`Online Boutique - Demo APP`](https://github.com/agilestacks/google-components/tree/main/online-boutique-app)
 
-Click `Start` to go through the installation instructions.
+## Setup
 
-## Prerequisites
+First you need initialize the sandbox configuration.
+To do this please run the initialization command:
 
-* You must be logged into your GCP account.
-
-* Open the Google `cloudshell` using the following [link](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/agilestacks/google-stacks&cloudshell_image=gcr.io/superhub/cloud-shell&cloudshell_tutorial=hub-anthos-with-demo-app.md) (if not already opened):
-
-*NOTE: The next steps must be executed from within the `cloudshell`*
-
-## Configuration
-
-Before you can deploy the sandbox we need to ask you for some information.
-
-Please run the initialization command pointing to the `hub` manifest file:
-
-```shell
-hub stack init -f hub-anthos-with-demo-app.yaml
+```bash
+hub stack init
 ```
 
-The command will ask you to enter the ID of your GCP project.
+The command will prompt you to enter the `GCP project ID` and
+will create initial configuration files and download required components.
 
-Some of the components create DNS records (for easier access to the provisioned services) and some of them also need a GCS bucket to store their states.
-The tool (`hub cli`) we use to provision sandboxes itself produces a state file that must be uploaded to the cloud.
-For simplicity, we can pre-create Cloud DNS Zone and GCS bucket in your GCP project with random names.
+By default command enable auto configure of sandbox during `deploy` or `undeploy`.
 
-Please run the following command to configure the environment of pre-create the required cloud resources (Cloud DNS Zone and GCS bucket):
+### Advance case
 
-```shell
+For some advanced cases you need to configure sandbox manually.
+To do this just pass `--disable-auto-configure` flag:
+
+```bash
+hub stack init --disable-auto-configure
+```
+
+And after that to configure sandbox manually run command:
+
+```bash
 hub stack configure
 ```
 
-If any of the sandbox components would require additional configuration parameters, users will be asked to provide them.
+The [Hub CLI] produces a state file after provisioning of sandbox,
+same as its components, and it must be uploaded to the cloud.
+For simplicity, we pre-create `Cloud DNS Zone` and `GCS bucket`
+in your GCP project with pre-generated names.
+This is done during `configure` command.
 
-Every `component` has a set of parameters (key-value pairs) such as GKE cluster name or number of nodes in a node pool.
-Please explore `parameters` section of the [`hub-anthos-with-demo-app.yaml`](https://github.com/agilestacks/google-stacks/blob/main/hub-anthos-with-demo-app.yaml) to see what parameters are available.
+## Deploy/Undeploy
+
+Once you are done with the configuration, use the following command to deploy a sandbox:
+
+```bash
+hub stack deploy
+```
+
+To deploy a specific component on the sandbox:
+
+```bash
+hub stack deploy -c <name-of-the-component>
+```
+
+To undeploy a specific component on the sandbox:
+
+```bash
+hub stack undeploy -c <name-of-the-component>
+```
+
+If any of the sandbox components would require additional configuration parameters,
+users will be asked to provide them.
+
+To delete the sandbox, run the followng command:
+
+```bash
+hub stack undeploy
+```
+
+### Parameters
+
+Each `component` has a set of parameters (key-value pairs) such as
+GKE cluster name or number of nodes in a node pool, etc.
+
+Please explore `parameters` section of the `hub.yaml` to see what parameters are available.
 Any default value can be overridden.
-To get more information on how the components are implemented refer to their README files.
+To get more information on how components are implemented refer to their README files.
 
-### How to recover the configuration of an existing sandbox?
+## Recover
 
-Google Cloud Shell environments are ephemeral,
-which means any files stored locally on the Cloud Shell machine will be lost when
-the machine restarts.
-Luckily, we store sandbox state files in the Cloud,
-which means, if we lose a local state, we can always recover it from the Cloud.
+Google Cloud Shell environments are ephemeral, which means any files stored locally
+on the Cloud Shell machine will be lost when the machine restarts.
+Luckily, we store sandbox state files in the Cloud, which means,
+if we lose a local state, we can always recover it from the Cloud.
 
-Execute the following commands to recover a state of a sandbox:
+In order to recover your sandbox first you need to find ID of sandbox
+in the list of sandboxes in your GCP project.
 
-```shell
-hub stack init -f hub-anthos-with-demo-app.yaml -s {GCS path to a state file of the sanbox}
-hub stack configure
+To do this run next command:
+
+```bash
+hub state ls
 ```
 
-Please browse GCS buckets in your project to find the right one by the convention below:
+Next step will be initializations of your target sandbox:
 
-GCS path naming convention:
+```bash
+hub stack init <id>
+```
 
-*gs://{sandbox state bucket}/{stack dns name}/hub/hub.state*
-
-Example:
-
-*gs://superhub-superhub/overconfident-corvo-216.epam.devops.delivery/hub/hub.state*
-
-After state is recovered, you can undeploy or update your sandbox.
-
-## Stack Deployment
-
-Run `hub stack deploy` to deploy the sandbox
-
-Run `hub stack undeploy` to undeploy the sandbox
-
-Run `hub stack deploy -c <name-of-the-component>` to deploy a specific component on the sandbox
-
-Run `hub undeploy -c <name-of-the-component>` to undeploy a specific component on the sandbox
-
-## Parameters
-
-TBD: List of sandbox params to override
-
-## Demo App Source Code and Documentation
-
-Detailed documentation and source code for the microservices demo app on GKE is available here: https://github.com/GoogleCloudPlatform/microservices-demo/
+[Hub CLI] will find location of state file, download it and prepare configuration files.
 
 ## Architecture Diagram
 
-![GKE Sandbox Architecture](/images/gke_asm_diagram.png)
+![GKE Sandbox Architecture](https://google.devops.delivery/images/gke_asm_diagram.png)
+
+## See also
+
+* [Demo App Source Code and Documentation](https://github.com/GoogleCloudPlatform/microservices-demo/)
