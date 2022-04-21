@@ -27,13 +27,13 @@ lifecycle:
 parameters:
   - name: projectId
     default: superhub
-    fromEnv: GCP_PROJECT_ID
+    fromEnv: GOOGLE_PROJECT
   - name: dns.domain
-    default: c1.stacks.oginskis.lv
+    default: my.superhub.io
     fromEnv: HUB_DOMAIN_NAME
   - name: stateBucketName
     default: superhub_state
-    fromEnv: STATE_BUCKET
+    fromEnv: HUB_STATE_BUCKET
   - name: hubStackName
     fromEnv: HUB_STACK_NAME
 
@@ -42,7 +42,7 @@ parameters:
     - name: name
       value: ${hubStackName}
     - name: zone
-      value: us-central1-a
+      fromEnv: GOOGLE_ZONE
     - name: machineType
       value: e2-standard-4
     - name: nodeCount
