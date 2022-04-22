@@ -115,3 +115,5 @@ hub stack init <id>
 ## Architecture Diagram
 
 ![Web Server VM Architecture](https://google.devops.delivery/images/web_server_diagram.png)
+
+[Hub CLI]: https://superhub.io

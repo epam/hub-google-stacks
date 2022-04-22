@@ -152,3 +152,5 @@ k cluster-info
 
 * [Cloud Composer Guide](https://cloud.google.com/composer/docs/how-to)
 * [Creating Environment](https://cloud.google.com/composer/docs/how-to/managing/creating)
+
+[Hub CLI]: https://superhub.io

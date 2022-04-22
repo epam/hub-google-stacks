@@ -112,10 +112,12 @@ hub stack init <id>
 
 [Hub CLI] will find location of state file, download it and prepare configuration files.
 
+## See also
+
+* [Demo App Source Code and Documentation](https://github.com/GoogleCloudPlatform/microservices-demo/)
+
 ## Architecture Diagram
 
 ![GKE Sandbox Architecture](https://google.devops.delivery/images/gke_asm_diagram.png)
 
-## See also
-
-* [Demo App Source Code and Documentation](https://github.com/GoogleCloudPlatform/microservices-demo/)
+[Hub CLI]: https://superhub.io
