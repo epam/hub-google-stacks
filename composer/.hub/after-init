@@ -13,3 +13,6 @@ EOF
 
 touch "$HUB_WORKDIR/requirements.txt"
 dotenv set "COMPOSER_REQUIREMENTS_TXT" "$HUB_WORKDIR/requirements.txt"
+
+USER_ACCOUNT="$(gcloud --format=json auth list | jq -cMr --arg u "$USER" '.[] | [select(.status == "ACTIVE"), {account: $u}] | first | .account')"
+dotenv set "USER_ACCOUNT" "$USER_ACCOUNT"
