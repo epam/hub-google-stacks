@@ -121,7 +121,7 @@ parameters:
       value: ${component.anthosIngressGateway.ip}
       kind: link
     - name: zoneName
-      value: ${dns.name}
+      fromEnv: HUB_STACK_NAME
 
   - name: component.onlineBoutiqueApp
     parameters:
