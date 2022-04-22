@@ -83,9 +83,6 @@ parameters:
 - name: projectId
   fromEnv: GOOGLE_PROJECT
   brief: Reference to current GCP project
-- name: hub.deployedBy
-  fromEnv: USER
-  brief: This parameter will help to identify deployments done by the user
 - name: dns.name
   fromEnv: HUB_STACK_NAME
 - name: dns.domain
@@ -98,14 +95,11 @@ parameters:
     Name of GCS bucket where Terraform enabled components upload their state.
     It must be located in the current GCP project and the GCP service account
     which is used to provision the stack must have permissions to access it.
-  default: tf_superhub
-  fromEnv: STATE_BUCKET
+  fromEnv: HUB_STATE_BUCKET
 - name: cloud.region
   fromEnv: GOOGLE_REGION
-  default: europe-west1
 - name: cloud.zone
   fromEnv: GOOGLE_ZONE
-  default: europe-west1-b
 
 - name: component.certificate.name
   value: ${dns.name}

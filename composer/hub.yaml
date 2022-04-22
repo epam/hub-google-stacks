@@ -48,11 +48,33 @@ parameters:
   - name: gke.nodeCount
     value: 3
     brief: GKE cluster nodes count
-  - name: composer.version
-    default: v1
-    fromEnv: COMPOSER_VERSION
-    brief: Version of composer environment (v1 or v2)
-
+  - name: composer
+    parameters:
+      - name: version
+        default: v1
+        fromEnv: COMPOSER_VERSION
+        brief: Version of composer environment (v1 or v2)    
+      - name: python.version
+        default: 3
+        fromEnv: COMPOSER_PYTHON_VERSION
+        brief: Python version
+      - name: pyton.requirementsFile
+        default: ./requirements.txt
+        fromEnv: COMPOSER_REQUIREMENTS_TXT
+        brief: |
+          Path to the requirements.txt file for composer custom pypi packages
+          Absolute path or relative to the composer-environment component directory
+      - name: airflow.imageVersion
+        empty: allow
+        fromEnv: AIRFLOW_IMAGE_VERSION
+        brief: |
+          Airflow image version (empty for latest)
+          See available: https://cloud.google.com/composer/docs/concepts/versioning/composer-versions
+      - name: endpoint
+        default: public
+        brief: "Composer endpoint (public or private)"
+        fromEnv: COMPOSER_ENDPOINT
+        
   - name: component.network
     parameters:
       - name: name
