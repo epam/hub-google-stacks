@@ -26,13 +26,10 @@ lifecycle:
 
 parameters:
   - name: projectId
-    default: superhub
     fromEnv: GOOGLE_PROJECT
   - name: dns.domain
-    default: my.superhub.io
     fromEnv: HUB_DOMAIN_NAME
   - name: stateBucketName
-    default: superhub_state
     fromEnv: HUB_STATE_BUCKET
   - name: hubStackName
     fromEnv: HUB_STACK_NAME

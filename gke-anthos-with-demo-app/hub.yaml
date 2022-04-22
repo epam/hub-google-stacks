@@ -65,13 +65,10 @@ lifecycle:
 
 parameters:
   - name: projectId
-    default: superhub
     fromEnv: GOOGLE_PROJECT
   - name: dns.domain
-    default: my.superhub.io
     fromEnv: HUB_DOMAIN_NAME
   - name: stateBucketName
-    default: superhub_state
     fromEnv: HUB_STATE_BUCKET
   - name: hubStackName
     fromEnv: HUB_STACK_NAME
@@ -92,7 +89,7 @@ parameters:
   - name: component.gkeNodePool
     parameters:
     - name: name
-      value: vo-pool-1
+      value: ${component.gke.name}-1
     - name: clusterName
       value: ${component.gke.name}
     - name: zone
