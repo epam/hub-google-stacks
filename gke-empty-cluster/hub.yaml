@@ -40,6 +40,8 @@ parameters:
       value: ${hubStackName}
     - name: zone
       fromEnv: GOOGLE_ZONE
+    - name: region
+      fromEnv: GOOGLE_REGION      
     - name: machineType
       value: e2-standard-4
     - name: nodeCount
