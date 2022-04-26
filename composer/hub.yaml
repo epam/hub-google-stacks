@@ -50,6 +50,9 @@ parameters:
   - name: gke.nodeCount
     value: 3
     brief: GKE cluster nodes count
+  - name: gke.machineType
+    value: n1-standard-1
+    brief: Machine type for GKE nodes
   - name: composer
     parameters:
       - name: version

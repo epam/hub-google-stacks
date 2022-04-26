@@ -4,10 +4,18 @@ This sandbox will deploy a [Cloud Composer](https://cloud.google.com/composer)
 
 List of the components used in this sandbox:
 
-* [`Network`](https://github.com/agilestacks/google-components/tree/main/gke-gcloud)
+* [`Network`](https://github.com/agilestacks/google-components/tree/main/network)
 * [`Cloud Composer Environment`](https://github.com/agilestacks/google-components/tree/main/composer-environment)
 
 > Note: additional how-to information is available in [Cloud Composer Guide](https://cloud.google.com/composer/docs/how-to)
+
+### PyPi modules
+
+In this directory you will find a `requirements.txt` file. Please feel free to modify it to add custom pypi packages.
+
+Available modules can be found in airflow 
+
+> note: this file should be modified before deploy
 
 ## Setup
 
@@ -25,7 +33,7 @@ will create initial configuration files and download required components.
 
 By default command enable auto configure of sandbox during `deploy` or `undeploy`.
 
-### Advance case
+### Advanced case
 
 For some advanced cases you need to configure sandbox manually.
 To do this just pass `--disable-auto-configure` flag:
