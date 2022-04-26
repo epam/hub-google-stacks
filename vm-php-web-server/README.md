@@ -17,7 +17,7 @@ List of the components used in this stack:
 
 ## Setup
 
-*NOTE: If you want to undeploy or update an existing stack please proceed directly to Step 3 - Recover*
+*NOTE: If you want to undeploy or update an existing sandbox please proceed directly to Step 3 - Recover*
 
 First you need initialize the sandbox configuration.
 To do this please run the initialization command:
