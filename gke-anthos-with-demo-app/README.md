@@ -17,6 +17,8 @@ List of the components used in this sandbox:
 
 ## Setup
 
+*NOTE: If you want to undeploy or update an existing stack please proceed directly to Step 3 - Recover*
+
 First you need initialize the sandbox configuration.
 To do this please run the initialization command:
 
@@ -95,22 +97,26 @@ on the Cloud Shell machine will be lost when the machine restarts.
 Luckily, we store sandbox state files in the Cloud, which means,
 if we lose a local state, we can always recover it from the Cloud.
 
-In order to recover your sandbox first you need to find ID of sandbox
-in the list of sandboxes in your GCP project.
+To recover your sandbox please follow the steps below.
 
-To do this run next command:
+Switch to your current project:
+```bash
+gcloud config set project <project-id>
+```
 
+List all recent sandboxes deployed to your project and find ID of the sandbox you would like to recover:
 ```bash
 hub state ls
 ```
 
-Next step will be initializations of your target sandbox:
-
+Initialize your sandbox:
 ```bash
 hub stack init <id>
 ```
 
-[Hub CLI] will find location of state file, download it and prepare configuration files.
+[Hub CLI] will find the location of the state file, download it and prepare configuration files.
+
+After stack recovery undeploy or update your existing stack using corresponding commands. 
 
 ## See also
 
