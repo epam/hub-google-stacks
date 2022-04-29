@@ -1,3 +1,5 @@
 components/
-.hub/
+components
+/.hub/*
+/**/.hub/*
 .env
