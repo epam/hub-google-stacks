@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+HUB_WORKDIR="${HUB_WORKDIR:-$(pwd)}"
+
+cat <<EOF | color green
+
+To add your custom pypi modules to, modify this file:
+
+$HUB_WORKDIR/requirements.txt
+
+before you run: hub stack deploy
+EOF
+
+touch "$HUB_WORKDIR/requirements.txt"
+dotenv set "COMPOSER_REQUIREMENTS_TXT" "$HUB_WORKDIR/requirements.txt"
+
+USER_ACCOUNT="$(gcloud --format=json auth list | jq -cMr --arg u "$USER" '.[] | [select(.status == "ACTIVE"), {account: $u}] | first | .account')"
+dotenv set "USER_ACCOUNT" "$USER_ACCOUNT"

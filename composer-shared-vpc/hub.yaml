@@ -11,12 +11,13 @@ components:
         remote: https://github.com/agilestacks/google-components.git
         subDir: network
   - name: shared-vpc
+    depends:
+      - network
     source:
       dir: components/shared-vpc
       git:
         remote: https://github.com/agilestacks/google-components.git
         subDir: shared-vpc
-      depends: [network]
   - name: composer
     source:
       dir: components/composer-environment
@@ -43,19 +44,24 @@ parameters:
     fromEnv: HUB_DOMAIN_NAME
   - name: dns.name
     fromEnv: HUB_STACK_NAME
+
   - name: cloud.region
     fromEnv: GOOGLE_REGION
   - name: cloud.zone
     fromEnv: GOOGLE_ZONE
-  - name: gke.node.count
-    value: 3
-    brief: GKE cluster nodes count
-  - name: gke.node.machineType
-    value: n1-standard-1
-    brief: GKE cluster nodes machine type
-  - name: gke.node.diskSize
-    value: 100
-    brief: GKE cluster nodes disk size (in GB)
+
+  - name: gke.node
+    parameters:
+      - name: count
+        value: 3
+        brief: GKE cluster nodes count
+      - name: machineType
+        value: n1-standard-1
+        brief: GKE cluster nodes machine type
+      - name: diskSize
+        value: 100
+        brief: GKE cluster nodes disk size (in GB)
+
   - name: component.network
     parameters:
       - name: name
@@ -64,39 +70,52 @@ parameters:
         value: false
       - name: subnetwork.cidr
         value: 10.127.0.0/20
+
+  - name: sharedVpc
+    parameters:
+      - name: subnetwork
+        kind: link
+        value: ${component.network.subnetwork}
+      - name: hostProjectId
+        brief: Host Project ID for Shared VPC setup
+        fromEnv: GOOGLE_PROJECT
+      - name: serviceProjectId
+        brief: Service Project ID for Shared VPC setup
+        fromEnv: GOOGLE_SHARED_VPC_SERVICE_PROJECT
+
   - name: composer
     parameters:
       - name: version
         default: v1
         fromEnv: COMPOSER_VERSION
-        brief: Version of composer environment (v1 or v2)
-      # - name: network.project
-      #   fromEnv: GOOGLE_SHARED_VPC_PROJECT
-      #   brief: Host project id for shared VPC setup
-      # - name: network.name
-      #   fromEnv: GOOGLE_SHARED_VPC_NETWORK
-      #   brief: Name of the network in shared VPC setup
+      - name: projectId
+        value: ${sharedVpc.serviceProjectId}
+      - name: network.subnetwork
+        kind: link
+        value: ${component.network.subnetwork}
+      - name: network.projectId
+        value: ${sharedVpc.hostProjectId}
       - name: endpoint
         default: public
         fromEnv: COMPOSER_ENDPOINT
-        brief: "Type of Composer endpoint. Value can be: public or private"
       - name: airflow.imageVersion
         empty: allow
         breif: Airflow image version
         value: ""
       - name: python.version
         value: 3
-        breif: Python runtime version
+        breif: The major version of Python used to run the Apache Airflow scheduler, worker, and webserver processes. Can be set to '2' or '3'.
       - name: python.requirementsFile
         fromEnv: COMPOSER_REQUIREMENTS_TXT
         default: requirements.txt
         brief: |
-          Path (relative to component directory or absolute) to the requirements.txt
+          Path (relative to component directory or absolute) to the requirements.txt.
 
-          Additional packages defined in this file and will be applied during composer deployment
+          Additional packages defined in this file and will be applied during composer deployment.
 
-          If you modify file after composer has been deployed, run: `hub stack deploy -c composer` again
+          If you modify file after composer has been deployed, run: `hub stack deploy -c composer` again.
+
 outputs:
   - name: composer.airflow.url
   - name: composer.gcs.bucket
-  - name: composer.gke.cluster
+  - name: kubernetes.gke.cluster
