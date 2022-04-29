@@ -44,21 +44,20 @@ lifecycle:
 parameters:
   - name: hub.userAccount
     fromEnv: USER_ACCOUNT
+
   - name: dns.domain
     fromEnv: HUB_DOMAIN_NAME
   - name: dns.name
     fromEnv: HUB_STACK_NAME
+  - name: stateBucketName
+    fromEnv: HUB_STATE_BUCKET
+
   - name: cloud.region
     fromEnv: GOOGLE_REGION
   - name: cloud.zone
     fromEnv: GOOGLE_ZONE
   - name: projectId
     fromEnv: GOOGLE_PROJECT
-  - name: stateBucketName
-    fromEnv: HUB_STATE_BUCKET
-  - name: gke.nodeCount
-    value: 3
-    brief: GKE cluster nodes count
 
   - name: component.network
     parameters:
@@ -69,6 +68,18 @@ parameters:
       - name: subnetwork.cidr
         value: 10.127.0.0/20
 
+  - name: gke.node
+    parameters:
+      - name: count
+        value: 3
+        brief: GKE cluster nodes count
+      - name: machineType
+        value: n1-standard-1
+        brief: GKE cluster nodes machine type
+      - name: diskSize
+        value: 100
+        brief: GKE cluster nodes disk size (in GB)
+
   - name: composer
     parameters:
       - name: envName
@@ -76,12 +87,12 @@ parameters:
       - name: version
         default: v1
         fromEnv: COMPOSER_VERSION
-        brief: Version of composer environment (v1 or v2)    
+        brief: Version of composer environment (v1 or v2)
       - name: python.version
         default: 3
         fromEnv: COMPOSER_PYTHON_VERSION
         brief: Python version
-      - name: pyton.requirementsFile
+      - name: python.requirementsFile
         default: ./requirements.txt
         fromEnv: COMPOSER_REQUIREMENTS_TXT
         brief: |
@@ -97,6 +108,11 @@ parameters:
         default: public
         brief: "Composer endpoint (public or private)"
         fromEnv: COMPOSER_ENDPOINT
+      - name: projectId
+        value: ${projectId}
+      - name: network.subnetwork
+        kind: link
+        value: ${component.network.subnetwork}
 
   - name: dataflow
     parameters:
@@ -123,4 +139,4 @@ parameters:
 outputs:
   - name: composer.airflow.url
   - name: composer.gcs.bucket
-  - name: composer.gke.cluster
+  - name: kubernetes.gke.cluster

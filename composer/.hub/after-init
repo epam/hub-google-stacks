@@ -11,6 +11,9 @@ $HUB_WORKDIR/requirements.txt
 before you run: hub stack deploy
 EOF
 
+touch "$HUB_WORKDIR/.hub/kubeconfig"
+dotenv set "HUB_KUBECONFIG" "$HUB_WORKDIR/.hub/kubeconfig"
+
 touch "$HUB_WORKDIR/requirements.txt"
 dotenv set "COMPOSER_REQUIREMENTS_TXT" "$HUB_WORKDIR/requirements.txt"
 
