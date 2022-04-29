@@ -116,10 +116,10 @@ hub stack init <id>
 
 [Hub CLI] will find the location of the state file, download it and prepare configuration files.
 
-After stack recovery undeploy or update your existing stack using corresponding commands. 
+After stack recovery undeploy or update your existing stack using corresponding commands.
 
 ## Architecture Diagram
 
-![Web Server VM Architecture](https://google.devops.delivery/images/web_server_diagram.png)
+![Web Server VM Architecture](https://gcp.devops.delivery/images/web_server_diagram.png)
 
 [Hub CLI]: https://superhub.io

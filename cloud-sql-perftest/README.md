@@ -108,10 +108,10 @@ hub stack init <id>
 
 [Hub CLI] will find the location of the state file, download it and prepare configuration files.
 
-After stack recovery undeploy or update your existing stack using corresponding commands. 
+After stack recovery undeploy or update your existing stack using corresponding commands.
 
 ## Architecture Diagram
 
-![Cloud SQL Sandbox Architecture](https://google.devops.delivery/images/cloud_sql_diagram.png)
+![Cloud SQL Sandbox Architecture](https://gcp.devops.delivery/images/cloud_sql_diagram.png)
 
 [Hub CLI]: https://superhub.io

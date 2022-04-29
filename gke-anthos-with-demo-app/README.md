@@ -4,7 +4,7 @@
 
 GKE Sandbox with Anthos Service Mesh, ingress controller, and demo application.
 
-![Schema](https://google.devops.delivery/images/gke-with-anthos.png)
+![Schema](https://gcp.devops.delivery/images/gke-with-anthos.png)
 
 List of the components used in this sandbox:
 
@@ -116,7 +116,7 @@ hub stack init <id>
 
 [Hub CLI] will find the location of the state file, download it and prepare configuration files.
 
-After stack recovery undeploy or update your existing stack using corresponding commands. 
+After stack recovery undeploy or update your existing stack using corresponding commands.
 
 ## See also
 
@@ -124,6 +124,6 @@ After stack recovery undeploy or update your existing stack using corresponding 
 
 ## Architecture Diagram
 
-![GKE Sandbox Architecture](https://google.devops.delivery/images/gke_asm_diagram.png)
+![GKE Sandbox Architecture](https://gcp.devops.delivery/images/gke_asm_diagram.png)
 
 [Hub CLI]: https://superhub.io

@@ -123,7 +123,7 @@ hub stack init <id>
 
 [Hub CLI] will find the location of the state file, download it and prepare configuration files.
 
-After stack recovery undeploy or update your existing stack using corresponding commands. 
+After stack recovery undeploy or update your existing stack using corresponding commands.
 
 ## Getting deployment result
 
@@ -166,7 +166,7 @@ k cluster-info
 
 ## Architecture Diagram
 
-![Composer Sandbox Architecture](https://google.devops.delivery/images/composer_diagram.png)
+![Composer Sandbox Architecture](https://gcp.devops.delivery/images/composer_diagram.png)
 
 [Hub CLI]: https://superhub.io
 [Cloud Composer Guide]: https://cloud.google.com/composer/docs/how-to
