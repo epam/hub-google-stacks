@@ -1,0 +1,8 @@
+#!/bin/bash -ex
+
+echo "Checking if user is interractive"
+if test -n "$(which tty)" && tty -s || echo "$-" | grep 'i'; then
+  echo "!!! I am interactive !!!"
+else
+  echo "!!! I non interactive !!!"
+fi
