@@ -17,12 +17,14 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud-node-pool
+  depends: [gke-gcloud]
 - name: anthos-service-mesh
   source:
     dir: components/anthos-service-mesh
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-service-mesh
+  depends: [gke-gcloud]      
 - name: anthos-ingress-gateway
   source:
     dir: components/anthos-ingress-gateway
@@ -30,18 +32,21 @@ components:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-ingress-gateway
       ref: main
+  depends: [anthos-service-mesh]
 - name: online-boutique-app
   source:
     dir: components/online-boutique-app
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
+  depends: [gke-gcloud-node-pool, anthos-ingress-gateway]      
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: dns-zone-record-set
+  depends: [anthos-ingress-gateway]
 
 extensions:
   configure:
@@ -83,10 +88,16 @@ parameters:
       fromEnv: GOOGLE_REGION      
     - name: machineType
       value: e2-standard-4
+      brief: GKE cluster worker nodes machine type
+      fromEnv: GKE_CLUSTER_MACHINE_TYPE
     - name: nodeCount
-      value: 1
+      default: 1
+      brief: GKE cluster worker nodes count
+      fromEnv: GKE_CLUSTER_NODE_COUNT
     - name: version
-      value: 1.21
+      default: 1.21
+      brief: Version of Kubernetes API
+      fromEnv: GKE_KUBERNETES_VERSION
 
   - name: component.gkeNodePool
     parameters:
@@ -96,10 +107,14 @@ parameters:
       value: ${component.gke.name}
     - name: zone
       value: ${component.gke.zone}
-    - name: machineType
-      value: e2-standard-4
     - name: nodeCount
-      value: 3
+      default: 3
+      brief: GKE worker node pool size
+      fromEnv: GKE_NODE_POOL_COUNT
+    - name: machineType
+      default: e2-standard-4
+      brief: GKE worker node machine size
+      fromEnv: GKE_NODE_POOL_MACHINE_TYPE
 
   - name: component.anthosServiceMesh
     parameters:
@@ -108,10 +123,8 @@ parameters:
     - name: zone
       value: ${component.gke.zone}
 
-  - name: component.anthosIngressGateway
-    parameters:
-    - name: name
-      value: default-gateway
+  - name: component.anthosIngressGateway.name
+    value: ingressgateway
 
   - name: component.dnsZoneRecordSet
     parameters:
