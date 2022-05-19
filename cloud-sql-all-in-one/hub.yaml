@@ -33,6 +33,8 @@ requires:
   - gcp
 
 extensions:
+  init:
+    - gcp
   configure:
     - gcp
     - env

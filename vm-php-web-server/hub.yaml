@@ -58,6 +58,8 @@ components:
       subDir: wp-loadgenerator
 
 extensions:
+  init:
+  - gcp
   configure:
   - gcp
   - env

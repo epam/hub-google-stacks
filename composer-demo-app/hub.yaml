@@ -31,6 +31,9 @@ requires:
   - gcp
 
 extensions:
+  init:
+    - gcp
+    - .hub/after-init
   configure:
     - gcp
     - env

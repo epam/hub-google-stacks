@@ -31,6 +31,8 @@ components:
       subDir: online-boutique-app
 
 extensions:
+  init:
+    - gcp
   configure:
     - gcp
     - env

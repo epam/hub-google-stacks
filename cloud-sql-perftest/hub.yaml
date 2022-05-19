@@ -19,6 +19,8 @@ components:
       subDir: k6-sql-load-test
 
 extensions:
+  init:
+    - gcp
   configure:
     - gcp
     - env

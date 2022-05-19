@@ -11,6 +11,8 @@ components:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
 extensions:
+  init:
+    - gcp
   configure:
     - gcp
     - env

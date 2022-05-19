@@ -49,6 +49,8 @@ components:
   depends: [anthos-ingress-gateway]
 
 extensions:
+  init:
+    - gcp
   configure:
     - gcp
     - env
