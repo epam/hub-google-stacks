@@ -6,8 +6,9 @@ cat <<EOF | color green
 
 To add your custom pypi modules to, modify this file:
 
-  $HUB_WORKDIR/requirements.txt
+$HUB_WORKDIR/requirements.txt
 
+before you run: hub stack deploy
 EOF
 
 touch "$HUB_WORKDIR/.hub/kubeconfig"
@@ -18,3 +19,9 @@ dotenv set "COMPOSER_REQUIREMENTS_TXT" "$HUB_WORKDIR/requirements.txt"
 
 USER_ACCOUNT="$(gcloud --format=json auth list | jq -cMr --arg u "$USER" '.[] | [select(.status == "ACTIVE"), {account: $u}] | first | .account')"
 dotenv set "USER_ACCOUNT" "$USER_ACCOUNT"
+
+SANDBOX_DIR="$(basename "$HUB_WORKDIR")"
+dotenv set "SANDBOX_DIR" "$SANDBOX_DIR"
+
+SANDBOX_COMMIT="$(git rev-parse HEAD | cut -c-7)"
+dotenv set "SANDBOX_COMMIT" "$SANDBOX_COMMIT"

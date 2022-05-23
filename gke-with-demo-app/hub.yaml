@@ -52,6 +52,10 @@ lifecycle:
   - online-boutique-app
 
 parameters:
+  - name: hub.sandboxDir
+    fromEnv: SANDBOX_DIR
+  - name: hub.sandboxCommit
+    fromEnv: SANDBOX_COMMIT
   - name: hub.userAccount
     fromEnv: USER_ACCOUNT
 
