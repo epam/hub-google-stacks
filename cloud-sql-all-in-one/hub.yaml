@@ -35,6 +35,7 @@ requires:
 extensions:
   init:
     - gcp
+    - .hub/after-init
   configure:
     - gcp
     - env
@@ -47,6 +48,9 @@ lifecycle:
     - postgresql
 
 parameters:
+  - name: hub.userAccount
+    fromEnv: USER_ACCOUNT
+
   - name: dns.domain
     fromEnv: HUB_DOMAIN_NAME
   - name: dns.name

@@ -13,6 +13,7 @@ components:
 extensions:
   init:
     - gcp
+    - .hub/after-init
   configure:
     - gcp
     - env
@@ -27,6 +28,9 @@ lifecycle:
 
 
 parameters:
+  - name: hub.userAccount
+    fromEnv: USER_ACCOUNT
+
   - name: projectId
     fromEnv: GOOGLE_PROJECT
   - name: dns.domain
@@ -43,7 +47,7 @@ parameters:
     - name: zone
       fromEnv: GOOGLE_ZONE
     - name: region
-      fromEnv: GOOGLE_REGION      
+      fromEnv: GOOGLE_REGION
     - name: machineType
       value: e2-standard-4
     - name: nodeCount

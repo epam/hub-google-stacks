@@ -21,6 +21,7 @@ components:
 extensions:
   init:
     - gcp
+    - .hub/after-init
   configure:
     - gcp
     - env
@@ -37,6 +38,9 @@ lifecycle:
   - k6-sql-load-test
 
 parameters:
+- name: hub.userAccount
+  fromEnv: USER_ACCOUNT
+
 - name: projectId
   fromEnv: GOOGLE_PROJECT
 - name: dns.domain

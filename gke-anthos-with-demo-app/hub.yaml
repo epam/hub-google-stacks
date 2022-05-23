@@ -24,7 +24,7 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-service-mesh
-  depends: [gke-gcloud]      
+  depends: [gke-gcloud]
 - name: anthos-ingress-gateway
   source:
     dir: components/anthos-ingress-gateway
@@ -39,7 +39,7 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
-  depends: [gke-gcloud-node-pool, anthos-ingress-gateway]      
+  depends: [gke-gcloud-node-pool, anthos-ingress-gateway]
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
@@ -51,6 +51,7 @@ components:
 extensions:
   init:
     - gcp
+    - .hub/after-init
   configure:
     - gcp
     - env
@@ -71,6 +72,9 @@ lifecycle:
   - online-boutique-app
 
 parameters:
+  - name: hub.userAccount
+    fromEnv: USER_ACCOUNT
+
   - name: projectId
     fromEnv: GOOGLE_PROJECT
   - name: dns.domain
@@ -87,7 +91,7 @@ parameters:
     - name: zone
       fromEnv: GOOGLE_ZONE
     - name: region
-      fromEnv: GOOGLE_REGION      
+      fromEnv: GOOGLE_REGION
     - name: machineType
       value: e2-standard-4
       brief: GKE cluster worker nodes machine type

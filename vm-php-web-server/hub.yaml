@@ -60,6 +60,7 @@ components:
 extensions:
   init:
   - gcp
+  - .hub/after-init
   configure:
   - gcp
   - env
@@ -82,6 +83,9 @@ lifecycle:
   - wp-loadgenerator
 
 parameters:
+- name: hub.userAccount
+  fromEnv: USER_ACCOUNT
+
 - name: projectId
   fromEnv: GOOGLE_PROJECT
   brief: Reference to current GCP project
