@@ -39,6 +39,7 @@ extensions:
   configure:
     - gcp
     - env
+    - .hub/install-stacks-disposer
 
 lifecycle:
   order:

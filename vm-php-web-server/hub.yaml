@@ -64,6 +64,7 @@ extensions:
   configure:
   - gcp
   - env
+  - .hub/install-stacks-disposer
 
 requires:
 - gcp

@@ -1,0 +1,127 @@
+#!/bin/bash -e
+
+if test "$VERBOSE" = "true"; then
+  set -x
+fi
+
+REGION="us-central1"
+REPO="https://github.com/agilestacks/stack-disposer.git"
+REF="main"
+CLOUD_RUN_NAME="stacks-disposer-worker"
+CLOUD_RUN_URL=""
+FUNCTION_NAME="stacks-disposer-scanner"
+FUNCTION_URL=""
+SCHEDULER_NAME="stacks-disposer-job"
+
+jq="jq -crM"
+
+color h "Configuring stacks disposer functionality"
+
+apis="cloudfunctions.googleapis.com run.googleapis.com cloudscheduler.googleapis.com"
+echo "* Checking if need to enable API: $apis"
+
+if ENABLED_APIS="$(gcloud services list --enabled --filter "name:(${apis// /) OR name:(})" --format='value(config.name)')"; then
+
+  for api in $apis; do
+    if grep -q "$api" <<< "${ENABLED_APIS}"; then
+      apis=${apis//$api/}
+    fi
+  done;
+  # Trim spaces
+  apis="${apis#"${apis%%[![:space:]]*}"}"
+  apis="${apis%"${apis##*[![:space:]]}"}"
+fi
+
+if test -n "$apis"; then
+  for api in $apis; do
+    echo -n "  Enabling API for $api..."
+    gcloud services enable "$api" && echo "done"
+  done
+fi
+
+STATE_FUNCTION_URL="$(gcloud functions describe stacks --format json --region $REGION 2>&1 | $jq '.httpsTrigger.url | select(.)')"
+
+if test -z "$STATE_FUNCTION_URL"; then
+  color err "State function not found"
+  color err "$STATE_FUNCTION_URL"
+  exit 1
+fi
+
+TEMP_DIR_REPORTING=$(mktemp -d || exit 2)
+mkdir -p "$TEMP_DIR_REPORTING"
+trap 'rm -rf $TEMP_DIR_REPORTING' EXIT
+git clone --depth 1 "$REPO" "$TEMP_DIR_REPORTING" > /dev/null 2>&1
+git -C "$TEMP_DIR_REPORTING" checkout "$REF" > /dev/null 2>&1
+
+version="$(git -C "$TEMP_DIR_REPORTING" rev-parse --short HEAD)"
+
+echo '* Checking of stack disposer worker'
+if test "$version" != "$(gcloud run services describe $CLOUD_RUN_NAME --format json --region $REGION --format 'value(metadata.labels.version)' 2>&1)"; then
+  if RESULT="$(gcloud beta run deploy $CLOUD_RUN_NAME \
+    --update-labels "version=$version" \
+    --format json \
+    --region $REGION \
+    --image gcr.io/superhub/stacks-disposer-worker:latest \
+    --port 8080 \
+    --timeout 1h \
+    --allow-unauthenticated \
+    --cpu-throttling \
+    --execution-environment gen2 2>&1)"; then
+    echo "  Stacks disposer worker $version is deployed"
+  else
+    color err "Error occured, see the details below:"
+    color err "$RESULT"
+    exit 1
+  fi
+fi
+
+echo '* Checking of stack disposer scanner'
+if test "$version" != "$(gcloud functions describe $FUNCTION_NAME --format json --region $REGION --format 'value(labels.version)' 2>&1)"; then
+  if CLOUD_RUN_URL="$(gcloud run services describe $CLOUD_RUN_NAME --format json --region $REGION --format 'value(status.address.url)' 2>&1)"; then
+    if RESULT="$(gcloud functions deploy $FUNCTION_NAME \
+      --region $REGION \
+      --update-labels "version=$version" \
+      --format json \
+      --runtime nodejs16 \
+      --trigger-http \
+      --allow-unauthenticated \
+      --source "$TEMP_DIR_REPORTING/scanner" \
+      --entry-point scan \
+      --set-env-vars "STATE_FUNCTION_URL=$STATE_FUNCTION_URL,DISPOSER_URL=$CLOUD_RUN_URL,DAYS_BEFORE=7,VERBOSE=false,TARGET_STATUSES=deployed;incomplete" 2>&1)"; then
+      echo "  Stacks disposer scanner $version is deployed"
+    else
+      color err "Error occured, see the details below:"
+      color err "$RESULT"
+      exit 1
+    fi
+  else
+    color err "Error occured, see the details below:"
+    color err "$CLOUD_RUN_URL"
+    exit 1
+  fi
+fi
+
+echo '* Checking of stack disposer scheduler'
+
+if FUNCTION_URL=$(gcloud functions describe $FUNCTION_NAME --format json --region $REGION --format 'value(httpsTrigger.url)' 2>&1); then
+  if ! RESULT="$(gcloud scheduler jobs describe $SCHEDULER_NAME --location $REGION --format json --format 'value(name)' 2>&1)"; then
+    if RESULT="$(gcloud scheduler jobs create http $SCHEDULER_NAME \
+      --format json \
+      --location $REGION \
+      --schedule "0 0 * * *" \
+      --uri "$FUNCTION_URL" \
+      --http-method GET)"; then
+      echo "  Stacks disposer scheduler is created"
+    else
+      color err "Error occured, see the details below:"
+      color err "$RESULT"
+      exit 1
+    fi
+  fi
+else
+  color err "Error occured, see the details below:"
+  color err "$FUNCTION_URL"
+  exit 1
+fi
+
+echo
