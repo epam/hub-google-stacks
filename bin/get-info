@@ -6,5 +6,5 @@ dotenv set "USER_ACCOUNT" "$USER_ACCOUNT"
 SANDBOX_DIR="$(basename "$HUB_WORKDIR")"
 dotenv set "SANDBOX_DIR" "$SANDBOX_DIR"
 
-SANDBOX_COMMIT="$(git rev-parse HEAD | cut -c-7)"
+SANDBOX_COMMIT="$(git rev-parse HEAD)"
 dotenv set "SANDBOX_COMMIT" "$SANDBOX_COMMIT"

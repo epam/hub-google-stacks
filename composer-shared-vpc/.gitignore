@@ -1,3 +1,4 @@
 requirements.txt
-!/.hub/after-init
+!.hub/after-init
 !.hub/install-stacks-disposer
+!.hub/get-info

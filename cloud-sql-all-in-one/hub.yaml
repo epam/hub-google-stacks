@@ -35,7 +35,7 @@ requires:
 extensions:
   init:
     - gcp
-    - .hub/after-init
+    - .hub/get-info
   configure:
     - gcp
     - env
