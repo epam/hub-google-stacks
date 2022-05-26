@@ -5,7 +5,7 @@ if test "$VERBOSE" = "true"; then
 fi
 
 REGION="us-central1"
-REPO="https://github.com/agilestacks/stack-disposer.git"
+REPO="https://github.com/agilestacks/stacks-disposer.git"
 REF="main"
 CLOUD_RUN_NAME="stacks-disposer-worker"
 CLOUD_RUN_URL=""
@@ -55,13 +55,13 @@ git -C "$TEMP_DIR_REPORTING" checkout "$REF" > /dev/null 2>&1
 
 version="$(git -C "$TEMP_DIR_REPORTING" rev-parse --short HEAD)"
 
-echo '* Checking of stack disposer worker'
+echo '* Checking of stacks disposer worker'
 if test "$version" != "$(gcloud run services describe $CLOUD_RUN_NAME --format json --region $REGION --format 'value(metadata.labels.version)' 2>&1)"; then
   if RESULT="$(gcloud beta run deploy $CLOUD_RUN_NAME \
     --update-labels "version=$version" \
     --format json \
     --region $REGION \
-    --image gcr.io/superhub/stacks-disposer-worker:latest \
+    --image "gcr.io/superhub/stacks-disposer-worker:$version" \
     --port 8080 \
     --timeout 1h \
     --allow-unauthenticated \
@@ -75,7 +75,7 @@ if test "$version" != "$(gcloud run services describe $CLOUD_RUN_NAME --format j
   fi
 fi
 
-echo '* Checking of stack disposer scanner'
+echo '* Checking of stacks disposer scanner'
 if test "$version" != "$(gcloud functions describe $FUNCTION_NAME --format json --region $REGION --format 'value(labels.version)' 2>&1)"; then
   if CLOUD_RUN_URL="$(gcloud run services describe $CLOUD_RUN_NAME --format json --region $REGION --format 'value(status.address.url)' 2>&1)"; then
     if RESULT="$(gcloud functions deploy $FUNCTION_NAME \
@@ -101,7 +101,7 @@ if test "$version" != "$(gcloud functions describe $FUNCTION_NAME --format json 
   fi
 fi
 
-echo '* Checking of stack disposer scheduler'
+echo '* Checking of stacks disposer scheduler'
 
 if FUNCTION_URL=$(gcloud functions describe $FUNCTION_NAME --format json --region $REGION --format 'value(httpsTrigger.url)' 2>&1); then
   if ! RESULT="$(gcloud scheduler jobs describe $SCHEDULER_NAME --location $REGION --format json --format 'value(name)' 2>&1)"; then
