@@ -29,7 +29,7 @@ will create initial configuration files and download required components.
 
 By default command enable auto configure of sandbox during `deploy` or `undeploy`.
 
-### Advance case
+### Advanced use case
 
 For some advanced cases you need to configure sandbox manually.
 To do this just pass `--disable-auto-configure` flag:
@@ -50,7 +50,7 @@ For simplicity, we pre-create `Cloud DNS Zone` and `GCS bucket`
 in your GCP project with pre-generated names.
 This is done during `configure` command.
 
-## Deploy/Undeploy
+## Deploy Sandbox
 
 Once you are done with the configuration, use the following command to deploy the sandbox:
 
@@ -64,20 +64,19 @@ To deploy a specific component on the sandbox:
 hub stack deploy -c <name-of-the-component>
 ```
 
+## Undeploy Sandbox
+
+To delete the sandbox run the following command:
+```bash
+hub stack undeploy
+```
+
 To undeploy a specific component on the sandbox:
 
 ```bash
 hub stack undeploy -c <name-of-the-component>
 ```
 
-If any of the sandbox components would require additional configuration parameters,
-users will be asked to provide them.
-
-To delete the sandbox run this command:
-
-```bash
-hub stack undeploy
-```
 
 ### Parameters
 
