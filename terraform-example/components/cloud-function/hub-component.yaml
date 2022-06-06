@@ -1,0 +1,18 @@
+version: 1
+kind: component
+
+requires:
+  - terraform
+
+parameters:
+  - name: hub.componentName
+
+  - name: cloudFunction
+    parameters:
+      - name: name
+        value: "${hub.componentName}"
+        env: TF_VAR_name
+
+outputs:
+  - name: cloudFunction.url
+    fromTfVar: url

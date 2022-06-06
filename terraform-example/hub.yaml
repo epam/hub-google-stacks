@@ -1,0 +1,47 @@
+version: 1
+kind: stack
+meta:
+  name: Terraform example
+
+components:
+  - name: cloud-function
+    source:
+      dir: components/cloud-function
+
+extensions:
+  init:
+    - gcp
+    - .hub/get-info
+  configure:
+    - gcp
+    - env
+    - .hub/install-stacks-disposer
+
+requires:
+  - gcp
+
+lifecycle:
+  verbs:
+    - deploy
+    - undeploy
+  order:
+    - cloud-function
+
+parameters:
+  - name: hub.sandboxDir
+    fromEnv: SANDBOX_DIR
+  - name: hub.sandboxCommit
+    fromEnv: SANDBOX_COMMIT
+  - name: hub.userAccount
+    fromEnv: USER_ACCOUNT
+
+  - name: stateBucketName
+    fromEnv: HUB_STATE_BUCKET
+  - name: hubStackName
+    fromEnv: HUB_STACK_NAME
+
+  - name: cloudFunction.name
+    value: ${hubStackName}
+
+outputs:
+  - name: cloudFunction.url
