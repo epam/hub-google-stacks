@@ -1,5 +1,0 @@
-#!/bin/sh -e
-
-kubectl config delete-context "$DOMAIN_NAME" > /dev/null 2>&1 || true
-gcloud container clusters get-credentials "$NAME" --zone "$ZONE"
-kubectl config rename-context "$(kubectl config current-context)" "$HUB_DOMAIN_NAME"

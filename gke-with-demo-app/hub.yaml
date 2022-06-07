@@ -19,46 +19,20 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: nginx
-      ref: hooks
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*
 
 - name: external-dns
   source:
     dir: components/external-dns
     git:
       remote: https://github.com/agilestacks/google-components.git
-      subDir: external-dns
-      ref: hooks
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*
-  - file: .hub/gcp-create-dns-admin-sa
-    brief: Links Kubernetes Service Account, which is used by External DNS pod with a Service Account in GCP with DNS admin permissions
-    triggers:
-    - pre-deploy
-  - file: .hub/gcp-delete-dns-admin-sa
-    brief: Deletes a Service Account with DNS admin permissions from GCP
-    triggers:
-    - post-undeploy                   
+      subDir: external-dns                 
 
 - name: online-boutique-app
   source:
     dir: components/online-boutique-app
     git:
       remote: https://github.com/agilestacks/google-components.git
-      subDir: online-boutique-app
-      ref: hooks      
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*      
+      subDir: online-boutique-app    
 
 extensions:
   init:
