@@ -35,6 +35,9 @@ parameters:
   - name: hub.userAccount
     fromEnv: USER_ACCOUNT
 
+  - name: projectId
+    fromEnv: GOOGLE_PROJECT
+    brief: Reference to current GCP project
   - name: stateBucketName
     fromEnv: HUB_STATE_BUCKET
   - name: hubStackName
