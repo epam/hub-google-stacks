@@ -24,18 +24,8 @@ hub stack init
 The command will prompt you to enter the `GCP project ID` and
 will create initial configuration files and download required components.
 
-By default command enable auto configure of sandbox during `deploy` or `undeploy`.
 
-### Advanced use case
-
-For some advanced cases you need to configure sandbox manually.
-To do this just pass `--disable-auto-configure` flag:
-
-```bash
-hub stack init --disable-auto-configure
-```
-
-And after that to configure sandbox manually run command:
+Next, to configure the sandbox manually run the following command:
 
 ```bash
 hub stack configure
