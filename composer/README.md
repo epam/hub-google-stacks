@@ -23,9 +23,7 @@ hub stack init
 The command will prompt you to enter the `GCP project ID` and
 will create initial configuration files and download required components.
 
-Next, to configure the sandbox manually run the following command:
-
-And after that to configure sandbox manually run command:
+Next, to configure sandbox manually run the following command:
 
 ```bash
 hub stack configure
