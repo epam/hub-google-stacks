@@ -19,7 +19,6 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: nginx
-      ref: hooks
   hooks:
   - file: .hub/gke-context
     brief: Sets Kubernetes (GKE) Context
@@ -32,7 +31,6 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: external-dns
-      ref: hooks
   hooks:
   - file: .hub/gke-context
     brief: Sets Kubernetes (GKE) Context
@@ -56,8 +54,7 @@ components:
     dir: components/online-boutique-app
     git:
       remote: https://github.com/agilestacks/google-components.git
-      subDir: online-boutique-app
-      ref: hooks      
+      subDir: online-boutique-app    
   hooks:
   - file: .hub/gke-context
     brief: Sets Kubernetes (GKE) Context
