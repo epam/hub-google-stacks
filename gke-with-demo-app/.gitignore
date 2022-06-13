@@ -1,6 +1,5 @@
 !.hub/install-stacks-disposer
 !.hub/get-info
-!.hub/gcp-create-dns-admin-sa 
-!.hub/gcp-delete-dns-admin-sa
+!.hub/gcp-external-dns/
 !.hub/gke-context
 

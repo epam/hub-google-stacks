@@ -38,14 +38,18 @@ components:
     brief: Sets Kubernetes (GKE) Context
     triggers:
     - pre-*
-  - file: .hub/gcp-create-dns-admin-sa
+  - file: .hub/gcp-external-dns/create-dns-admin-sa
     brief: Links Kubernetes Service Account, which is used by External DNS pod with a Service Account in GCP with DNS admin permissions
     triggers:
     - pre-deploy
-  - file: .hub/gcp-delete-dns-admin-sa
+  - file: .hub/gcp-external-dns/delete-dns-admin-sa
     brief: Deletes a Service Account with DNS admin permissions from GCP
     triggers:
-    - post-undeploy                   
+    - post-undeploy
+  - file: .hub/gcp-external-dns/patch-kube-sa
+    brief: Annotates external-dns SA in kubernetes with GCP Service Account (with DNS admin permissions) name
+    triggers:
+    - post-deploy                   
 
 - name: online-boutique-app
   source:

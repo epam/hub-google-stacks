@@ -19,13 +19,4 @@ gcloud projects add-iam-policy-binding "$PROJECT" \
 
 gcloud iam service-accounts add-iam-policy-binding "$SA_EMAIL" \
   --role roles/iam.workloadIdentityUser \
-  --member "serviceAccount:$PROJECT.svc.id.goog[$NAMESPACE/$SA_NAME]"
-
-cat <<EOF | kubectl --context="$DOMAIN_NAME" -n "$NAMESPACE" apply -f -
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: "$SA_NAME"
-  annotations:
-    iam.gke.io/gcp-service-account: "$SA_EMAIL"
-EOF
+  --member "serviceAccount:$PROJECT.svc.id.goog[$NAMESPACE/$HUB_COMPONENT]"

@@ -21,5 +21,3 @@ EOF
 else
   echo "Service account $SA_EMAIL has not been found (mogin on)"
 fi
-
-kubectl --context="$DOMAIN_NAME" -n "$NAMESPACE" delete sa "$SA_NAME"
