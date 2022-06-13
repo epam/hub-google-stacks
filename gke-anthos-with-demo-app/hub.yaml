@@ -11,6 +11,7 @@ components:
     git:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud
+
 - name: gke-gcloud-node-pool
   source:
     dir: components/gke-gcloud-node-pool
@@ -18,6 +19,7 @@ components:
       remote: https://github.com/agilestacks/google-components.git
       subDir: gke-gcloud-node-pool
   depends: [gke-gcloud]
+
 - name: anthos-service-mesh
   source:
     dir: components/anthos-service-mesh
@@ -25,6 +27,12 @@ components:
       remote: https://github.com/agilestacks/google-components.git
       subDir: anthos-service-mesh
   depends: [gke-gcloud]
+  hooks:
+  - file: .hub/gke-context
+    brief: Sets Kubernetes (GKE) Context
+    triggers:
+    - pre-*
+
 - name: anthos-ingress-gateway
   source:
     dir: components/anthos-ingress-gateway
@@ -33,6 +41,12 @@ components:
       subDir: anthos-ingress-gateway
       ref: main
   depends: [anthos-service-mesh]
+  hooks:
+  - file: .hub/gke-context
+    brief: Sets Kubernetes (GKE) Context
+    triggers:
+    - pre-*  
+
 - name: online-boutique-app
   source:
     dir: components/online-boutique-app
@@ -40,6 +54,12 @@ components:
       remote: https://github.com/agilestacks/google-components.git
       subDir: online-boutique-app
   depends: [gke-gcloud-node-pool, anthos-ingress-gateway]
+  hooks:
+  - file: .hub/gke-context
+    brief: Sets Kubernetes (GKE) Context
+    triggers:
+    - pre-*  
+    
 - name: dns-zone-record-set
   source:
     dir: components/dns-zone-record-set
