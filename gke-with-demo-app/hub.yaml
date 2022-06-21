@@ -1,7 +1,8 @@
 version: 1
 kind: stack
 meta:
-  name: GKE Sandbox with Demo App
+  name: GKE Sandbox Stack
+  brief: GKE Sandbox with Demo App
 
 components:
   - name: gke
@@ -115,6 +116,9 @@ parameters:
         fromEnv: GOOGLE_GKE_CLUSTER_VERSION
       - name: releaseChannel
         fromEnv: GOOGLE_GKE_RELEASE_CHANNEL
+
+  - name: component.ingress.class
+    value: nginx
 
   - name: component.onlineBoutiqueApp
     parameters:

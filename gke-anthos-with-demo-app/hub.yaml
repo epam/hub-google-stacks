@@ -1,7 +1,8 @@
 version: 1
 kind: stack
 meta:
-  name: GKE Sandbox with Anthos and Demo App
+  name: GKE Sandbox Stack
+  brief: GKE Sandbox with Anthos and Demo App
 
 components:
   - name: gke-gcloud
