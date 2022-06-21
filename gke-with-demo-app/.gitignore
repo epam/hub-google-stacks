@@ -2,4 +2,4 @@
 !.hub/get-info
 !.hub/gcp-external-dns/
 !.hub/gke-context
-
+!.hub/set-gke-version

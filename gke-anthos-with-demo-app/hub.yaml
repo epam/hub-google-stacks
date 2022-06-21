@@ -1,72 +1,71 @@
 version: 1
 kind: stack
 meta:
-  name: GKE Sandbox Stack
-  brief: GKE Sandbox Stack
+  name: GKE Sandbox with Anthos and Demo App
 
 components:
-- name: gke-gcloud
-  source:
-    dir: components/gke-gcloud
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: gke-gcloud
+  - name: gke-gcloud
+    source:
+      dir: components/gke-gcloud
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: gke-gcloud
 
-- name: gke-gcloud-node-pool
-  source:
-    dir: components/gke-gcloud-node-pool
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: gke-gcloud-node-pool
-  depends: [gke-gcloud]
+  - name: gke-gcloud-node-pool
+    source:
+      dir: components/gke-gcloud-node-pool
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: gke-gcloud-node-pool
+    depends: [gke-gcloud]
 
-- name: anthos-service-mesh
-  source:
-    dir: components/anthos-service-mesh
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: anthos-service-mesh
-  depends: [gke-gcloud]
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*
+  - name: anthos-service-mesh
+    source:
+      dir: components/anthos-service-mesh
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: anthos-service-mesh
+    depends: [gke-gcloud]
+    hooks:
+      - file: .hub/gke-context
+        brief: Sets Kubernetes (GKE) Context
+        triggers:
+          - pre-*
 
-- name: anthos-ingress-gateway
-  source:
-    dir: components/anthos-ingress-gateway
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: anthos-ingress-gateway
-      ref: main
-  depends: [anthos-service-mesh]
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*  
+  - name: anthos-ingress-gateway
+    source:
+      dir: components/anthos-ingress-gateway
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: anthos-ingress-gateway
+        ref: main
+    depends: [anthos-service-mesh]
+    hooks:
+      - file: .hub/gke-context
+        brief: Sets Kubernetes (GKE) Context
+        triggers:
+          - pre-*
 
-- name: online-boutique-app
-  source:
-    dir: components/online-boutique-app
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: online-boutique-app
-  depends: [gke-gcloud-node-pool, anthos-ingress-gateway]
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*  
-    
-- name: dns-zone-record-set
-  source:
-    dir: components/dns-zone-record-set
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: dns-zone-record-set
-  depends: [anthos-ingress-gateway]
+  - name: online-boutique-app
+    source:
+      dir: components/online-boutique-app
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: online-boutique-app
+    depends: [gke-gcloud-node-pool, anthos-ingress-gateway]
+    hooks:
+      - file: .hub/gke-context
+        brief: Sets Kubernetes (GKE) Context
+        triggers:
+          - pre-*
+
+  - name: dns-zone-record-set
+    source:
+      dir: components/dns-zone-record-set
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: dns-zone-record-set
+    depends: [anthos-ingress-gateway]
 
 extensions:
   init:
@@ -74,23 +73,24 @@ extensions:
     - .hub/get-info
   configure:
     - gcp
+    - .hub/set-gke-version
     - env
     - .hub/install-stacks-disposer
 
 requires:
-- gcp
+  - gcp
 
 lifecycle:
   verbs:
-  - deploy
-  - undeploy
+    - deploy
+    - undeploy
   order:
-  - gke-gcloud
-  - gke-gcloud-node-pool
-  - anthos-service-mesh
-  - anthos-ingress-gateway
-  - dns-zone-record-set
-  - online-boutique-app
+    - gke-gcloud
+    - gke-gcloud-node-pool
+    - anthos-service-mesh
+    - anthos-ingress-gateway
+    - dns-zone-record-set
+    - online-boutique-app
 
 parameters:
   - name: hub.sandboxDir
@@ -111,76 +111,76 @@ parameters:
 
   - name: component.gke
     parameters:
-    - name: name
-      value: ${hubStackName}
-    - name: zone
-      fromEnv: GOOGLE_ZONE
-    - name: region
-      fromEnv: GOOGLE_REGION
-    - name: machineType
-      value: e2-standard-4
-      brief: GKE cluster worker nodes machine type
-      fromEnv: GKE_CLUSTER_MACHINE_TYPE
-    - name: nodeCount
-      default: 1
-      brief: GKE cluster worker nodes count
-      fromEnv: GKE_CLUSTER_NODE_COUNT
-    - name: version
-      default: 1.21
-      brief: Version of Kubernetes API
-      fromEnv: GKE_KUBERNETES_VERSION
+      - name: name
+        value: ${hubStackName}
+      - name: zone
+        fromEnv: GOOGLE_ZONE
+      - name: region
+        fromEnv: GOOGLE_REGION
+      - name: machineType
+        value: e2-standard-4
+        brief: GKE cluster worker nodes machine type
+        fromEnv: GKE_CLUSTER_MACHINE_TYPE
+      - name: nodeCount
+        default: 1
+        brief: GKE cluster worker nodes count
+        fromEnv: GKE_CLUSTER_NODE_COUNT
+      - name: version
+        fromEnv: GOOGLE_GKE_CLUSTER_VERSION
+      - name: releaseChannel
+        fromEnv: GOOGLE_GKE_RELEASE_CHANNEL
 
   - name: component.gkeNodePool
     parameters:
-    - name: name
-      value: ${component.gke.name}-1
-    - name: clusterName
-      value: ${component.gke.name}
-    - name: zone
-      value: ${component.gke.zone}
-    - name: nodeCount
-      default: 3
-      brief: GKE worker node pool size
-      fromEnv: GKE_NODE_POOL_COUNT
-    - name: machineType
-      default: e2-standard-4
-      brief: GKE worker node machine size
-      fromEnv: GKE_NODE_POOL_MACHINE_TYPE
+      - name: name
+        value: ${component.gke.name}-1
+      - name: clusterName
+        value: ${component.gke.name}
+      - name: zone
+        value: ${component.gke.zone}
+      - name: nodeCount
+        default: 3
+        brief: GKE worker node pool size
+        fromEnv: GKE_NODE_POOL_COUNT
+      - name: machineType
+        default: e2-standard-4
+        brief: GKE worker node machine size
+        fromEnv: GKE_NODE_POOL_MACHINE_TYPE
 
   - name: component.anthosServiceMesh
     parameters:
-    - name: clusterName
-      value: ${component.gke.name}
-    - name: zone
-      value: ${component.gke.zone}
+      - name: clusterName
+        value: ${component.gke.name}
+      - name: zone
+        value: ${component.gke.zone}
 
   - name: component.anthosIngressGateway.name
     value: ingressgateway
 
   - name: component.dnsZoneRecordSet
     parameters:
-    - name: name
-      value: "*.${component.anthosIngressGateway.name}"
-    - name: type
-      value: "A"
-    - name: value
-      value: ${component.anthosIngressGateway.ip}
-      kind: link
-    - name: zoneName
-      fromEnv: HUB_STACK_NAME
+      - name: name
+        value: "*.${component.anthosIngressGateway.name}"
+      - name: type
+        value: "A"
+      - name: value
+        value: ${component.anthosIngressGateway.ip}
+        kind: link
+      - name: zoneName
+        fromEnv: HUB_STACK_NAME
 
   - name: component.onlineBoutiqueApp
     parameters:
-    - name: istioRevision
-      value: ${component.anthosServiceMesh.revision}
-      kind: link
-    - name: host
-      value: boutique.${component.anthosIngressGateway.name}.${dns.domain}
-    - name: ingressGateway
-      value: ${component.anthosIngressGateway.name}
+      - name: istioRevision
+        value: ${component.anthosServiceMesh.revision}
+        kind: link
+      - name: host
+        value: boutique.${component.anthosIngressGateway.name}.${dns.domain}
+      - name: ingressGateway
+        value: ${component.anthosIngressGateway.name}
 
 outputs:
-- name: component.anthosIngressGateway.ip
-- name: component.onlineBoutiqueApp.host
-- name: component.gke.url
-- name: component.anthosServiceMesh.url
+  - name: component.anthosIngressGateway.ip
+  - name: component.onlineBoutiqueApp.host
+  - name: component.gke.url
+  - name: component.anthosServiceMesh.url

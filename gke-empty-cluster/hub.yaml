@@ -1,32 +1,35 @@
 version: 1
 kind: stack
 meta:
-  name: GKE Sandbox Stack
-  brief: GKE Sandbox Stack
+  name: GKE Sandbox
+
 components:
-- name: gke-gcloud
-  source:
-    dir: components/gke-gcloud
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: gke-gcloud
+  - name: gke-gcloud
+    source:
+      dir: components/gke-gcloud
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: gke-gcloud
+
 extensions:
   init:
     - gcp
     - .hub/get-info
   configure:
     - gcp
+    - .hub/set-gke-version
     - env
     - .hub/install-stacks-disposer
+
 requires:
-- gcp
+  - gcp
+
 lifecycle:
   verbs:
-  - deploy
-  - undeploy
+    - deploy
+    - undeploy
   order:
-  - gke-gcloud
-
+    - gke-gcloud
 
 parameters:
   - name: hub.sandboxDir
@@ -47,19 +50,20 @@ parameters:
 
   - name: component.gke
     parameters:
-    - name: name
-      value: ${hubStackName}
-    - name: zone
-      fromEnv: GOOGLE_ZONE
-    - name: region
-      fromEnv: GOOGLE_REGION
-    - name: machineType
-      value: e2-standard-4
-    - name: nodeCount
-      value: 1
-    - name: version
-      value: 1.21
+      - name: name
+        value: ${hubStackName}
+      - name: zone
+        fromEnv: GOOGLE_ZONE
+      - name: region
+        fromEnv: GOOGLE_REGION
+      - name: machineType
+        value: e2-standard-4
+      - name: nodeCount
+        value: 1
+      - name: version
+        fromEnv: GOOGLE_GKE_CLUSTER_VERSION
+      - name: releaseChannel
+        fromEnv: GOOGLE_GKE_RELEASE_CHANNEL
 
 outputs:
-- name: component.gke.url
-
+  - name: component.gke.url

@@ -1,65 +1,63 @@
 version: 1
 kind: stack
 meta:
-  name: GKE Sandbox Stack
-  brief: GKE Sandbox Stack
+  name: GKE Sandbox with Demo App
 
 components:
+  - name: gke
+    source:
+      dir: components/gke-gcloud
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: gke-gcloud
 
-- name: gke
-  source:
-    dir: components/gke-gcloud
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: gke-gcloud
+  - name: nginx
+    source:
+      dir: components/nginx
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: nginx
+    hooks:
+      - file: .hub/gke-context
+        brief: Sets Kubernetes (GKE) Context
+        triggers:
+          - pre-*
 
-- name: nginx
-  source:
-    dir: components/nginx
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: nginx
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*
+  - name: external-dns
+    source:
+      dir: components/external-dns
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: external-dns
+    hooks:
+      - file: .hub/gke-context
+        brief: Sets Kubernetes (GKE) Context
+        triggers:
+          - pre-*
+      - file: .hub/gcp-external-dns/create-dns-admin-sa
+        brief: Links Kubernetes Service Account, which is used by External DNS pod with a Service Account in GCP with DNS admin permissions
+        triggers:
+          - pre-deploy
+      - file: .hub/gcp-external-dns/delete-dns-admin-sa
+        brief: Deletes a Service Account with DNS admin permissions from GCP
+        triggers:
+          - post-undeploy
+      - file: .hub/gcp-external-dns/patch-kube-sa
+        brief: Annotates external-dns SA in kubernetes with GCP Service Account (with DNS admin permissions) name
+        triggers:
+          - post-deploy
 
-- name: external-dns
-  source:
-    dir: components/external-dns
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: external-dns
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*
-  - file: .hub/gcp-external-dns/create-dns-admin-sa
-    brief: Links Kubernetes Service Account, which is used by External DNS pod with a Service Account in GCP with DNS admin permissions
-    triggers:
-    - pre-deploy
-  - file: .hub/gcp-external-dns/delete-dns-admin-sa
-    brief: Deletes a Service Account with DNS admin permissions from GCP
-    triggers:
-    - post-undeploy
-  - file: .hub/gcp-external-dns/patch-kube-sa
-    brief: Annotates external-dns SA in kubernetes with GCP Service Account (with DNS admin permissions) name
-    triggers:
-    - post-deploy                   
-
-- name: online-boutique-app
-  source:
-    dir: components/online-boutique-app
-    git:
-      remote: https://github.com/agilestacks/google-components.git
-      subDir: online-boutique-app    
-  hooks:
-  - file: .hub/gke-context
-    brief: Sets Kubernetes (GKE) Context
-    triggers:
-    - pre-*      
+  - name: online-boutique-app
+    source:
+      dir: components/online-boutique-app
+      git:
+        remote: https://github.com/agilestacks/google-components.git
+        subDir: online-boutique-app
+    hooks:
+      - file: .hub/gke-context
+        brief: Sets Kubernetes (GKE) Context
+        triggers:
+          - pre-*
 
 extensions:
   init:
@@ -67,21 +65,22 @@ extensions:
     - .hub/get-info
   configure:
     - gcp
+    - .hub/set-gke-version
     - env
     - .hub/install-stacks-disposer
 
 requires:
-- gcp
+  - gcp
 
 lifecycle:
   verbs:
-  - deploy
-  - undeploy
+    - deploy
+    - undeploy
   order:
-  - gke
-  - nginx
-  - external-dns
-  - online-boutique-app
+    - gke
+    - nginx
+    - external-dns
+    - online-boutique-app
 
 parameters:
   - name: hub.sandboxDir
@@ -102,24 +101,26 @@ parameters:
 
   - name: component.gke
     parameters:
-    - name: name
-      value: ${hubStackName}
-    - name: zone
-      fromEnv: GOOGLE_ZONE
-    - name: region
-      fromEnv: GOOGLE_REGION
-    - name: machineType
-      value: e2-standard-4
-    - name: nodeCount
-      value: 2
-    - name: version
-      value: 1.21
+      - name: name
+        value: ${hubStackName}
+      - name: zone
+        fromEnv: GOOGLE_ZONE
+      - name: region
+        fromEnv: GOOGLE_REGION
+      - name: machineType
+        value: e2-standard-4
+      - name: nodeCount
+        value: 2
+      - name: version
+        fromEnv: GOOGLE_GKE_CLUSTER_VERSION
+      - name: releaseChannel
+        fromEnv: GOOGLE_GKE_RELEASE_CHANNEL
 
   - name: component.onlineBoutiqueApp
     parameters:
-    - name: host
-      value: boutique.${dns.domain}
+      - name: host
+        value: boutique.${dns.domain}
 
 outputs:
-- name: component.onlineBoutiqueApp.host
-- name: component.gke.url
+  - name: component.onlineBoutiqueApp.host
+  - name: component.gke.url

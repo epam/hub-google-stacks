@@ -1,3 +1,4 @@
 !.hub/install-stacks-disposer
 !.hub/get-info
 !.hub/gke-context
+!.hub/set-gke-version
