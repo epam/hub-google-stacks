@@ -4,16 +4,18 @@ if test "$VERBOSE" = "true"; then
   set -x
 fi
 
+jq="jq -crM"
+
 indent() {
   sed 's/^/  /'
 }
 
-channels=$(gcloud container get-server-config --zone="$GOOGLE_ZONE" --format="json(channels)" --quiet | jq -crM '.')
+gke_config=$(gcloud container get-server-config --zone="$GOOGLE_ZONE" --format="json" --quiet | $jq '.')
 
 if ! dotenv contains "GOOGLE_GKE_RELEASE_CHANNEL"; then
   echo "Setting GKE release channel"
   echo "* Available release channels:"
-  echo "$channels" | jq -crM '[.channels[].channel] | join(", ") | ascii_downcase' | indent | color g
+  echo "$gke_config" | $jq '["None", .channels[].channel] | join(", ") | ascii_downcase' | indent | color g
 
   ask env "GOOGLE_GKE_RELEASE_CHANNEL" \
     --message "gke release channel (for possible values see above)" \
@@ -24,17 +26,29 @@ fi
 if ! dotenv contains "GOOGLE_GKE_CLUSTER_VERSION"; then
   echo "Setting GKE cluster version"
   release_channel=$(dotenv get "GOOGLE_GKE_RELEASE_CHANNEL")
-  channel=$(echo "$channels" | jq -crM --arg release_channel "$release_channel" '.channels[] | select(.channel == ($release_channel | ascii_upcase))')
-  if test -z "$channel"; then
-    color e "There is no $release_channel release channel available. Set correct value."
-    exit 1
+  if test "$release_channel" = "None"; then
+    suggest=$(echo "$gke_config" | $jq '.defaultClusterVersion')
+    suggest_tag="default static version"
+
+    echo "* Available static versions: "
+    echo "$gke_config" | $jq '.validMasterVersions[]' | indent | color g
+  else
+    channel=$(echo "$gke_config" | $jq ".channels[] | select(.channel == (\"$release_channel\" | ascii_upcase))")
+
+    if test -z "$channel"; then
+      color e "There is no $release_channel release channel available. Set correct value."
+      exit 1
+    fi
+
+    suggest=$(echo "$channel" | $jq '.defaultVersion')
+    suggest_tag="default for $release_channel release channel"
+
+    echo "* Available versions for $release_channel release channel: "
+    echo "$channel" | $jq '.validVersions[]' | indent | color g
   fi
-  suggest=$(echo "$channel" | jq -crM '.defaultVersion')
-  echo "* Available versions for $release_channel release channel: "
-  echo "$channel" | jq -crM '.validVersions[]' | indent | color g
 
   ask env "GOOGLE_GKE_CLUSTER_VERSION" \
     --message "gke cluster version (for possible values see above)" \
-    --suggest "$suggest" --suggest-tag "default for $release_channel release channel" \
+    --suggest "$suggest" --suggest-tag "$suggest_tag" \
     -history
 fi
