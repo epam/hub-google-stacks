@@ -18,7 +18,7 @@ resource "google_storage_bucket_object" "archive" {
 
 resource "google_cloudfunctions_function" "function" {
   name        = var.name
-  description = "Hello world function"
+  description = "Hello WORLD function"
   runtime     = "nodejs16"
 
   available_memory_mb   = 128
