@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-USER_ACCOUNT="$(gcloud --format=json auth list | jq -cMr --arg u "$USER" '[. += [{"account":$u,status:"ACTIVE"}] | .[] | select(.status == "ACTIVE")] | first | .account')"
+USER_ACCOUNT="$(gcloud auth list --verbosity=none --filter=status:ACTIVE --format="json(account)" | jq -cMr --arg u "$USER" '. += [{"account":$u}] | first | .account')"
 dotenv set "USER_ACCOUNT" "$USER_ACCOUNT"
 
 SANDBOX_DIR="$(basename "$HUB_WORKDIR")"
