@@ -62,14 +62,6 @@ hub stack deploy -c "composer"
 
 > Note: even in minimal configuration it will still take 20+ minutes to redeploy
 
-## Undeploy Sandbox
-
-To delete the sandbox, run the followng command:
-
-```bash
-hub stack undeploy
-```
-
 ## Parameters
 
 Each `component` has a set of parameters (key-value pairs) such as
@@ -79,6 +71,12 @@ Please explore `parameters` section of the `hub.yaml` to see what parameters are
 Any default value can be overridden.
 To get more information on how components are implemented refer to their README files.
 
+To view parameters for the current sandbox run this command:
+
+```bash
+hub show
+```
+
 | Name      | Description | Default Value |
 | :-------- | :--------   | :-------- |
 | `gke.nodeCount` | Number of GKE nodes for compose environment. Must be at least `3` | `3` |
@@ -87,6 +85,14 @@ To get more information on how components are implemented refer to their README 
 | `component.network.subnetworkCidr` | Target environment subnet address range | `10.127.0.0/20` |
 
 You can read about configuration options here: <https://cloud.google.com/composer/docs/how-to/managing/creating>
+
+## Undeploy Sandbox
+
+To delete the sandbox, run the followng command:
+
+```bash
+hub stack undeploy
+```
 
 ## Recover
 

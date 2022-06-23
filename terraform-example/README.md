@@ -53,7 +53,7 @@ Please explore `parameters` section of the `hub.yaml` to see what parameters are
 Any default value can be overridden.
 To get more information on how components are implemented refer to their README files.
 
-To view all sandbox parameters for the current sandbox run this command:
+To view parameters for the current sandbox run this command:
 
 ```bash
 hub show

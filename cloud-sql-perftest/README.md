@@ -56,14 +56,6 @@ or `component.k6SQLloadTest.numberOfUsers` to change test behaviour.
 If any of the sandbox components would require additional configuration parameters,
 users will be asked to provide them.
 
-## Undeploy Sandbox
-
-To delete the sandbox, run the followng command:
-
-```bash
-hub stack undeploy
-```
-
 ## Parameters
 
 Each `component` has a set of parameters (key-value pairs) such as
@@ -72,6 +64,20 @@ GKE cluster name or number of nodes in a node pool, etc.
 Please explore `parameters` section of the `hub.yaml` to see what parameters are available.
 Any default value can be overridden.
 To get more information on how components are implemented refer to their README files.
+
+To view parameters for the current sandbox run this command:
+
+```bash
+hub show
+```
+
+## Undeploy Sandbox
+
+To delete the sandbox, run the followng command:
+
+```bash
+hub stack undeploy
+```
 
 ## Recover
 
