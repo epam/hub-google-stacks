@@ -1,0 +1,35 @@
+#!/bin/sh -e
+# check_api_enabled() {
+#   gcloud services list --enabled --filter "name:($1)" --format="value(config.name)"  >/dev/null 2>&1
+# }
+
+USAGE_REPORTING_FUNCTION_REGION="us-central1"
+USAGE_REPORTING_FUNCTION_REPO="https://github.com/agilestacks/hub-state.git"
+USAGE_REPORTING_FUNCTION_REF="master"
+USAGE_REPORTING_FUNCTION_NAME="reporting-$(echo "$HUB_STATE_BUCKET" | tr '[:upper:]' '[:lower:]')"
+
+# if check_api_enabled "cloudfunctions.googleapis.com"; then
+#   printf "* Enabling API for cloudfunctions.googleapis.com... "
+#   gcloud services enable "cloudfunctions.googleapis.com" && echo "done"
+# fi
+
+color h "Configuring usage reporting cloud function "
+if gcloud functions describe "$USAGE_REPORTING_FUNCTION_NAME" --region "$USAGE_REPORTING_FUNCTION_REGION" > /dev/null 2>&1 && test -z "$FORCE_FUNCTION_UPDATE"; then
+  echo "* Usage reporting cloud function already deployed to $GOOGLE_PROJECT for $HUB_STATE_BUCKET"
+else
+  printf "* Deploying the function to %s, subscribing for %s events (it could take up to 2 minutes)... " "$GOOGLE_PROJECT" "$HUB_STATE_BUCKET"
+  TEMP_DIR_REPORTING=$(mktemp -d || exit 2)
+  mkdir -p "$TEMP_DIR_REPORTING"
+  trap 'rm -rf $TEMP_DIR_REPORTING' EXIT
+  git clone --depth 1 "$USAGE_REPORTING_FUNCTION_REPO" "$TEMP_DIR_REPORTING" > /dev/null 2>&1
+  git -C "$TEMP_DIR_REPORTING" checkout "$USAGE_REPORTING_FUNCTION_REF" > /dev/null 2>&1
+  if RESULT=$(gcloud functions deploy "$USAGE_REPORTING_FUNCTION_NAME" --runtime nodejs16 \
+    --trigger-bucket gs://"$HUB_STATE_BUCKET" \
+    --source "$TEMP_DIR_REPORTING"/api --entry-point reporting 2>&1); then
+    echo "Deployed"
+  else
+    color err "Error occured, see the details below:"
+    color err "$RESULT"
+    exit 1
+  fi
+fi

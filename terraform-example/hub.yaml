@@ -15,6 +15,7 @@ extensions:
   configure:
     - gcp
     - env
+    - .hub/configure-reporting
     - .hub/install-stacks-disposer
 
 requires:
