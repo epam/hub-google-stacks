@@ -68,8 +68,6 @@ extensions:
     - gcp
     - .hub/set-gke-version
     - env
-    - .hub/configure-reporting
-    - .hub/install-stacks-disposer
 
 requires:
   - gcp
